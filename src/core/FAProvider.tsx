@@ -5,37 +5,18 @@
 
 import { FAField, FAProviderConfig } from '@/types/field.types'
 import { FormProvider as AtomosFormProvider, FormField } from '@atomos/ui'
-import React, { createContext, useContext, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { FAAdapter } from './FAAdapter'
-
-export interface FAContextValue {
-  adapter: FAAdapter
-  fields: FAField[]
-  errors: Record<string, string>
-  formName: string
-}
-
-const FAContext = createContext<FAContextValue | null>(null)
-
-/**
- * Hook to access FA adapter
- */
-export const useFAContext = () => {
-  const context = useContext(FAContext)
-  if (!context) {
-    throw new Error('useFAContext must be used within FAProvider')
-  }
-  return context
-}
 
 export interface FAProviderProps extends Omit<FAProviderConfig, 'onSubmit'> {
   children: React.ReactNode
-  onSubmit: (data: any) => void | Promise<void>
+  formName?: string
+  onSubmit: (data: FAField[]) => void | Promise<void>
 }
 
-export const FAProvider: React.FC<FAProviderProps> = ({
-  formName,
+export const FAProvider = ({
   fields: initialFields,
+  formName,
   // locale = 'en', // TODO: implement locale support
   onSubmit,
   onSuccess,
@@ -44,9 +25,49 @@ export const FAProvider: React.FC<FAProviderProps> = ({
   showReset = false,
   resetLabel = 'Reset',
   children
-}) => {
+}: FAProviderProps) => {
   const [fields, setFields] = React.useState<FAField[]>(initialFields)
   const [errors, setErrors] = React.useState<Record<string, string>>({})
+
+  // Stable callbacks for adapter
+  const onFieldChange = React.useCallback((name: string, value: unknown) => {
+    setFields((prev) =>
+      prev.map((f) => (f.name === name ? { ...f, value } : f))
+    )
+  }, [])
+
+  const onFieldBlur = React.useCallback((name: string) => {
+    setFields((prev) =>
+      prev.map((f) => (f.name === name ? { ...f, touched: true } : f))
+    )
+  }, [])
+
+  const onErrorChange = React.useCallback((name: string, error: string) => {
+    setErrors((prev) => ({
+      ...prev,
+      [name]: error
+    }))
+  }, [])
+
+  // Create adapter once with stable callbacks
+  const adapter = useMemo(
+    () =>
+      new FAAdapter(initialFields, {
+        onFieldChange,
+        onFieldBlur,
+        onErrorChange
+      }),
+    [initialFields, onFieldChange, onFieldBlur, onErrorChange]
+  )
+
+  // Wire up adapter to handle changes and validation
+  const handleChange = React.useCallback((name: string, value: unknown) => {
+    adapter.handleChange(name, value)
+  }, [adapter])
+
+  const handleBlur = React.useCallback(async (name: string) => {
+    await adapter.handleBlur(name)
+  }, [adapter])
 
   // Convert FA fields to Atomos format
   const atomosFields: FormField[] = useMemo(
@@ -70,30 +91,6 @@ export const FAProvider: React.FC<FAProviderProps> = ({
     [fields, errors]
   )
 
-  // Create adapter
-  const adapter = useMemo(
-    () =>
-      new FAAdapter(fields, {
-        onFieldChange: (name, value) => {
-          setFields((prev) =>
-            prev.map((f) => (f.name === name ? { ...f, value } : f))
-          )
-        },
-        onFieldBlur: (name) => {
-          setFields((prev) =>
-            prev.map((f) => (f.name === name ? { ...f, touched: true } : f))
-          )
-        },
-        onErrorChange: (name, error) => {
-          setErrors((prev) => ({
-            ...prev,
-            [name]: error
-          }))
-        }
-      }),
-    [fields]
-  )
-
   // Handle Atomos form submission
   const handleAtomosSubmit = async (_formFields: FormField[]) => {
     try {
@@ -113,26 +110,26 @@ export const FAProvider: React.FC<FAProviderProps> = ({
     }
   }
 
-  const contextValue: FAContextValue = {
-    adapter,
-    fields,
-    errors,
-    formName
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    handleAtomosSubmit(atomosFields)
   }
 
   return (
-    <FAContext.Provider value={contextValue}>
-      <AtomosFormProvider
-        initialFields={atomosFields}
-        onSubmit={handleAtomosSubmit}
-        onSuccess={onSuccess}
-        onError={onError}
-        submitLabel={submitLabel}
-        showReset={showReset}
-        resetLabel={resetLabel}
-      >
+    <AtomosFormProvider
+      initialFields={atomosFields}
+      onSubmit={handleAtomosSubmit}
+      onSuccess={onSuccess}
+      onError={onError}
+      submitLabel={submitLabel}
+      showReset={showReset}
+      resetLabel={resetLabel}
+      handleChange={handleChange}
+      handleBlur={handleBlur}
+    >
+      <form onSubmit={handleFormSubmit} name={formName}>
         {children}
-      </AtomosFormProvider>
-    </FAContext.Provider>
+      </form>
+    </AtomosFormProvider>
   )
 }

@@ -22,7 +22,7 @@ export const FAToggle = forwardRef<HTMLInputElement, FAToggleProps>(
     const { fields, errors, handleChange, handleBlur } = useFormContext()
 
     // Find field by id
-    const field = fields.find((f: any) => f.name === id)
+    const field = fields.find((f) => f.name === id)
 
     if (!field && process.env.NODE_ENV === 'development') {
       console.warn(`FAToggle: No field found with id "${id}" in FormContext`)
@@ -40,7 +40,7 @@ export const FAToggle = forwardRef<HTMLInputElement, FAToggleProps>(
         <Toggle
           ref={ref}
           checked={checked}
-          onChange={(e: any) => handleChange(id, e.target.checked)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(id, e.target.checked)}
           onBlur={() => handleBlur(id)}
           label={label}
           labelPosition={labelPosition}

@@ -4,6 +4,7 @@
  */
 
 import { FARadioGroupProps } from '@/types/component.types'
+import { FAField } from '@/types/field.types'
 import { ErrorMessage, FieldSet, HelpText, Label, useFormContext } from '@atomos/ui'
 import { forwardRef } from 'react'
 
@@ -11,7 +12,7 @@ export const FARadioGroup = forwardRef<HTMLFieldSetElement, FARadioGroupProps>(
   (
     {
       id,
-      options,
+      options: propOptions,
       className,
       helpText,
       disabled = false,
@@ -32,10 +33,18 @@ export const FARadioGroup = forwardRef<HTMLFieldSetElement, FARadioGroupProps>(
 
     if (!field) return null
 
+    // Get options from props or field (cast to FAField to access options)
+    const faField = field as unknown as FAField
+    const options = propOptions || faField.options || []
+
+    if (options.length === 0 && process.env.NODE_ENV === 'development') {
+      console.warn(`FARadioGroup: No options provided for field "${id}"`)
+    }
+
     const error = field.touched ? errors[id] : undefined
     const value = field.value
     const label = field.label
-    const required = field.validation.required ?? false
+    const required = (field.validation?.required ?? false) as boolean
 
     const orientationClass =
       orientation === 'horizontal' ? 'flex flex-row flex-wrap gap-4' : 'flex flex-col gap-2'
@@ -82,7 +91,7 @@ export const FARadioGroup = forwardRef<HTMLFieldSetElement, FARadioGroupProps>(
                         : 'border-gray-600 bg-gray-800'
                     }
                   `}
-                  aria-invalid={!!error}
+                  aria-invalid={error ? 'true' : 'false'}
                 />
                 <label
                   htmlFor={optionId}

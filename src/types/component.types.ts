@@ -97,7 +97,7 @@ export interface FARadioOption {
  * Radio group props
  */
 export interface FARadioGroupProps extends FABaseProps {
-  options: FARadioOption[]
+  options?: FARadioOption[]
   orientation?: 'horizontal' | 'vertical'
 }
 
@@ -105,7 +105,7 @@ export interface FARadioGroupProps extends FABaseProps {
  * Select props
  */
 export interface FASelectProps extends FABaseProps {
-  children: ReactNode
+  children?: ReactNode
 }
 
 /**
@@ -126,4 +126,31 @@ export interface FAFileUploadProps extends FABaseProps {
   showFileList?: boolean
   onFileChange?: (files: File[]) => void
   onValidate?: (files: File[]) => string | null
+}
+
+/**
+ * DatePicker props
+ */
+export interface FADatePickerProps extends Omit<FABaseProps, 'helpText'> {
+  min?: Date
+  max?: Date
+}
+
+/**
+ * TimePicker props
+ */
+export interface FATimePickerProps extends Omit<FABaseProps, 'helpText'> {
+  step?: number
+}
+
+/**
+ * FASet (FieldSet container) props
+ */
+export interface FASetProps {
+  /** Field ID to get context from */
+  id: string
+  /** Child form components */
+  children: ReactNode
+  /** Additional CSS classes */
+  className?: string
 }

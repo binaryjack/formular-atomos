@@ -1,4 +1,5 @@
 import type { StorybookConfig } from '@storybook/react-vite'
+import { resolve } from 'path'
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -13,6 +14,19 @@ const config: StorybookConfig = {
   },
   docs: {
     autodocs: 'tag'
+  },
+  async viteFinal(config) {
+    return {
+      ...config,
+      resolve: {
+        ...config.resolve,
+        alias: {
+          ...config.resolve?.alias,
+          '@atomos/ui': resolve(__dirname, '../src/mocks/atomos-ui.tsx'),
+          'formular.dev': resolve(__dirname, '../src/mocks/formular-dev.ts')
+        }
+      }
+    }
   }
 }
 

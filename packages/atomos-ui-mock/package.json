@@ -1,0 +1,11 @@
+{
+  "name": "@atomos/ui",
+  "version": "1.0.0",
+  "description": "Mock Atomos UI components for Formular Atomos demo",
+  "main": "./index.tsx",
+  "types": "./index.tsx",
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  }
+}

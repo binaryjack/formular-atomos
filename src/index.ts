@@ -9,6 +9,7 @@ export { useFAAdapter } from './core/hooks/useFAAdapter'
 
 // Components
 export { FACheckbox } from './components/FACheckbox'
+export { FADatePicker } from './components/FADatePicker'
 export { FAEmail } from './components/FAEmail'
 export { FAFileUpload } from './components/FAFileUpload'
 export { FAInput } from './components/FAInput'
@@ -18,15 +19,19 @@ export { FAPhone } from './components/FAPhone'
 export { FAPostalCode } from './components/FAPostalCode'
 export { FARadioGroup } from './components/FARadioGroup'
 export { FASelect } from './components/FASelect'
+export { FASet } from './components/FASet'
+export { FASetValidationResult } from './components/FASetValidationResult'
 export { FATextarea } from './components/FATextarea'
+export { FATimePicker } from './components/FATimePicker'
 export { FAToggle } from './components/FAToggle'
 
 // Types
+export type { FASetValidationResultProps } from './components/FASetValidationResult'
 export type {
-    FABaseProps, FACheckboxProps, FAEmailProps, FAFileUploadProps, FAInputProps,
+    FABaseProps, FACheckboxProps, FADatePickerProps, FAEmailProps, FAFileUploadProps, FAInputProps,
     FANumberProps, FAPasswordProps, FAPhoneProps,
     FAPostalCodeProps, FARadioGroupProps,
-    FASelectProps, FATextareaProps, FAToggleProps, PasswordStrength
+    FASelectProps, FASetProps, FATextareaProps, FATimePickerProps, FAToggleProps, PasswordStrength
 } from './types/component.types'
 export { COUNTRIES } from './types/country.types'
 export type { CountryCode } from './types/country.types'

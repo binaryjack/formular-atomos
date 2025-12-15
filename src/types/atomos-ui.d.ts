@@ -6,23 +6,29 @@
 declare module '@atomos/ui' {
   import { ComponentPropsWithRef, ReactNode } from 'react'
 
+  export interface FormState {
+    fields: FormField[]
+    isSubmitting: boolean
+    isValid: boolean
+  }
+
   export interface FormField {
     name: string
     label: string
     type?: string
-    value?: any
+    value?: unknown
     required?: boolean
     disabled?: boolean
     placeholder?: string
     helpText?: string
-    validation?: any
+    validation?: Record<string, unknown>
     touched?: boolean
   }
 
   export interface FormContextValue {
     fields: FormField[]
     errors: Record<string, string>
-    handleChange: (name: string, value: any) => void
+    handleChange: (name: string, value: unknown) => void
     handleBlur: (name: string) => void
   }
 
@@ -36,6 +42,8 @@ declare module '@atomos/ui' {
     submitLabel?: string
     showReset?: boolean
     resetLabel?: string
+    handleChange?: (name: string, value: unknown) => void
+    handleBlur?: (name: string) => void | Promise<void>
     children: ReactNode
   }
 
@@ -93,6 +101,32 @@ declare module '@atomos/ui' {
       showFileList?: boolean
       onFileChange?: (files: File[]) => void
       onValidate?: (files: File[]) => string | null
+    }
+  >
+
+  // Atomos date/time components
+  export const DatePicker: React.ForwardRefExoticComponent<
+    Omit<ComponentPropsWithRef<'input'>, 'value' | 'onChange' | 'min' | 'max'> & {
+      id?: string
+      value?: Date
+      onChange?: (date: Date | null) => void
+      onBlur?: () => void
+      disabled?: boolean
+      min?: string
+      max?: string
+      error?: boolean
+    }
+  >
+
+  export const TimePicker: React.ForwardRefExoticComponent<
+    Omit<ComponentPropsWithRef<'input'>, 'onChange'> & {
+      id?: string
+      value?: string
+      onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+      onBlur?: () => void
+      disabled?: boolean
+      step?: number
+      error?: boolean
     }
   >
 

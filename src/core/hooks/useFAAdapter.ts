@@ -1,11 +1,10 @@
 /**
  * useFAAdapter hook
- * Provides access to the FA adapter for advanced use cases
+ * Provides access to form context for advanced use cases
  */
 
-import { useFAContext } from '../FAProvider'
+import { useFormContext } from '@atomos/ui'
 
 export const useFAAdapter = () => {
-  const { adapter } = useFAContext()
-  return adapter
+  return useFormContext()
 }

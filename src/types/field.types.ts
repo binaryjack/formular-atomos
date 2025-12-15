@@ -12,24 +12,35 @@ export type FAFieldType =
   | 'number'
   | 'url'
   | 'date'
+  | 'time'
+  | 'postal'
   | 'checkbox'
   | 'radio'
   | 'select'
   | 'textarea'
   | 'file'
+  | 'toggle'
 
 /**
  * Base field definition
  */
 export interface FAField {
   /** Unique field identifier (camelCase) */
+  id?: string
+  /** Unique field name */
   name: string
   /** Initial field value */
-  value: any
+  value?: unknown
   /** Display label */
   label: string
   /** Field type */
   type?: FAFieldType
+  /** Whether field is required */
+  required?: boolean
+  /** Whether field is disabled */
+  disabled?: boolean
+  /** Options for select/radio fields */
+  options?: FAOption[]
   /** Validation configuration */
   validation?: ValidationConfig
   /** Whether field has been touched */
@@ -50,7 +61,7 @@ export interface FAPhoneField extends FAField {
  * Postal code field configuration
  */
 export interface FAPostalCodeField extends FAField {
-  type: 'text'
+  type: 'postal'
   country: CountryCode
 }
 
@@ -100,7 +111,7 @@ export interface FAProviderConfig {
   /** Error message locale */
   locale?: FormularLocale
   /** Submit handler - receives validated data */
-  onSubmit: (data: any) => void | Promise<void>
+  onSubmit: (data: FAField[]) => void | Promise<void>
   /** Success callback */
   onSuccess?: (message?: string) => void
   /** Error callback */

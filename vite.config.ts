@@ -33,7 +33,9 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': resolve(__dirname, './src')
+      '@': resolve(__dirname, './src'),
+      '@atomos/ui': resolve(__dirname, './src/mocks/atomos-ui.tsx'),
+      'formular.dev': resolve(__dirname, './src/mocks/formular-dev.ts')
     }
   },
   test: {

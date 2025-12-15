@@ -12,6 +12,8 @@ const meta: Meta<typeof FASelect> = {
       const fields: FAField[] = [
         {
           id: 'country',
+          name: 'country',
+          value: '',
           type: 'select',
           label: 'Country',
           required: true

@@ -17,6 +17,8 @@ const createDecorator = (country: CountryCode) => (Story: any) => {
   const fields: FAPostalCodeField[] = [
     {
       id: 'postal',
+      name: 'postal',
+      value: '',
       type: 'postal',
       label: 'Postal Code',
       required: true,

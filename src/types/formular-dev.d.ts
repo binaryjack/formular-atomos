@@ -18,9 +18,9 @@ declare module 'formular.dev' {
 
   export interface FormularConfig {
     locale?: string
-    validators?: Record<string, any>
+    validators?: Record<string, unknown>
   }
 
-  export function createForm(config: FormularConfig): any
-  export const validators: any
+  export function createForm(config: FormularConfig): Record<string, unknown>
+  export const validators: Record<string, unknown>
 }

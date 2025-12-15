@@ -1,4 +1,5 @@
 import { CountryCode } from './country.types'
+import type { FAField } from './field.types'
 
 /**
  * Supported locales for error messages
@@ -31,20 +32,30 @@ export interface FormularValidator {
   country?: CountryCode
   strength?: PasswordStrength
   errorMessage?: string
-  customValidator?: (value: any) => boolean
+  customValidator?: (value: unknown) => boolean
+}
+
+/**
+ * Validation rule with message
+ */
+export interface ValidationRule<T> {
+  value: T
+  message: string
 }
 
 /**
  * Atomos validators (simple validation rules)
  */
 export interface AtomosValidation {
-  required?: boolean
-  minLength?: number
-  maxLength?: number
-  min?: number
-  max?: number
-  pattern?: RegExp
+  required?: boolean | ValidationRule<boolean>
+  minLength?: number | ValidationRule<number>
+  maxLength?: number | ValidationRule<number>
+  min?: number | ValidationRule<number>
+  max?: number | ValidationRule<number>
+  pattern?: RegExp | ValidationRule<string>
+  email?: boolean | ValidationRule<boolean>
   error?: string
+  guide?: string
 }
 
 /**
@@ -52,4 +63,8 @@ export interface AtomosValidation {
  */
 export interface ValidationConfig extends AtomosValidation {
   formularValidators?: FormularValidator[]
+  /** Formular.dev validation configuration (shorthand) */
+  formular?: Record<string, unknown>
+  /** Custom validation function */
+  custom?: (value: unknown, allFields?: FAField[]) => string | null
 }
