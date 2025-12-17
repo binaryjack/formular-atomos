@@ -2,9 +2,16 @@
 
 import type { FAField } from '@formular/atomos'
 import { FAProvider } from '@formular/atomos'
-import { ReactNode, useState } from 'react'
+import { createContext, ReactNode, useContext, useState } from 'react'
 import { CodeBlock } from './CodeBlock'
+import { DemoSettings, useDemoSettings } from './DemoSettings'
 import { JsonDisplay } from './JsonDisplay'
+
+const FormSubmitContext = createContext<{ isSubmitting: boolean }>({ isSubmitting: false })
+
+export function useFormSubmit() {
+  return useContext(FormSubmitContext)
+}
 
 interface FormDemoProps {
   title: string
@@ -27,10 +34,21 @@ export function FormDemo({
 }: FormDemoProps) {
   const [result, setResult] = useState<FAField[] | null>(null)
   const [activeTab, setActiveTab] = useState<'form' | 'code' | 'config'>('form')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const { apiDelay } = useDemoSettings()
 
   const handleSubmit = async (data: FAField[]) => {
+    setIsSubmitting(true)
     console.log('Form submitted:', data)
+    
+    // Simulate API delay
+    if (apiDelay > 0) {
+      await new Promise(resolve => setTimeout(resolve, apiDelay))
+    }
+    
     setResult(data)
+    setIsSubmitting(false)
   }
 
   return (
@@ -70,9 +88,13 @@ export function FormDemo({
           {/* Tab Content */}
           <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
             {activeTab === 'form' && (
-              <FAProvider formName={formName} fields={fields} onSubmit={handleSubmit}>
-                {children}
-              </FAProvider>
+              <FormSubmitContext.Provider value={{ isSubmitting }}>
+                <FAProvider formName={formName} fields={fields} onSubmit={handleSubmit}>
+                  <fieldset disabled={isSubmitting} className="disabled:opacity-60">
+                    {children}
+                  </fieldset>
+                </FAProvider>
+              </FormSubmitContext.Provider>
             )}
             {activeTab === 'code' && (
               <CodeBlock code={codeExample} language="tsx" />
@@ -81,6 +103,31 @@ export function FormDemo({
               <CodeBlock code={configExample} language="typescript" title="Field Configuration" />
             )}
           </div>
+
+          {/* Settings Accordion - Only show when on form tab */}
+          {activeTab === 'form' && (
+            <div className="bg-gray-800/50 rounded-lg border border-gray-700 overflow-hidden">
+              <button
+                onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+                className="w-full px-6 py-3 flex items-center justify-between text-left hover:bg-gray-800/50 transition-colors"
+              >
+                <span className="text-sm font-medium text-gray-200">Demo Settings</span>
+                <svg
+                  className={`w-5 h-5 text-gray-400 transition-transform ${isSettingsOpen ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {isSettingsOpen && (
+                <div className="px-6 pb-6">
+                  <DemoSettings />
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Right Column - Result */}

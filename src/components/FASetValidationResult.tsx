@@ -16,27 +16,32 @@ export interface FASetValidationResultProps {
 }
 
 export const FASetValidationResult = ({ errors, guides, isFocused = false }: FASetValidationResultProps) => {
-  const hasErrors = !!errors
-
-  if (hasErrors && !isFocused) {
-    // Show error when there are errors and field is not focused (onBlur)
-    return (
-      <div className="mt-1 text-sm text-red-500">
-        {errors}
-      </div>
-    )
+  // Ensure guide exists, log if missing
+  if (!guides) {
+    console.warn('[FASetValidationResult] No guide message provided')
+    guides = '[DEBUG: No guide message configured]'
   }
 
-  if (!hasErrors && guides && isFocused) {
-    // Show help text when no errors and field is focused
+  const hasError = !!errors
+
+  // If validation error AND focused → show guide
+  if (hasError && isFocused) {
     return (
-      <div className="mt-1 text-sm text-gray-400">
+      <div className="mt-1 text-sm !text-green-400" style={{ color: '#4ade80' }}>
         {guides}
       </div>
     )
   }
 
-  // Hide both when: errors && focused, or no errors && not focused
+  // If validation error AND not focused → show error
+  if (hasError && !isFocused) {
+    return (
+      <div className="mt-1 text-sm !text-red-400 font-medium" style={{ color: '#f87171' }}>
+        {errors}
+      </div>
+    )
+  }
+
   return null
 }
 

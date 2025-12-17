@@ -22,3 +22,8 @@ body {
             transparent,
             rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
+
+/* Force all JSON view text to white */
+.json-view-white * {
+    color: #ffffff !important;
+}

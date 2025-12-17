@@ -196,21 +196,21 @@ export class FAAdapter implements FAAdapterMethods {
   }
 
   async submit(): Promise<FAField[] | null> {
-    // TODO: Use FormularAgent when available
-    // if (this.formularAgent) {
-    //   await this.formularAgent.submit()
-    //   const data = this.formularAgent.getData()
-    //   // Convert back to FAField[]
-    //   return this.fields.map(f => ({ ...f, value: data[f.name] }))
-    // }
+    console.log('[FAAdapter.submit] Starting submission...')
+    console.log('[FAAdapter.submit] Current fields:', this.fields)
+    console.log('[FAAdapter.submit] Current errors:', this.errors)
     
     // Fallback to basic validation
     const isValid = await this.validateAll()
     
+    console.log('[FAAdapter.submit] Validation result:', isValid)
+    
     if (!isValid) {
+      console.log('[FAAdapter.submit] Validation failed, returning null')
       return null
     }
 
+    console.log('[FAAdapter.submit] Returning validated fields:', this.fields)
     return this.fields
   }
 

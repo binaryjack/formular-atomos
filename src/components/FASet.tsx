@@ -20,7 +20,6 @@ export const FASet = ({ id, children, className = '' }: FASetProps) => {
   const { field, error, guide } = useFAField(id)
   const [isFocused, setIsFocused] = useState(false)
 
-  // Track focus state by monitoring the input element
   useEffect(() => {
     const input = document.getElementById(id)
     if (!input) return

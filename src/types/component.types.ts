@@ -61,6 +61,7 @@ export interface FAPasswordProps extends FABaseProps {
   placeholder?: string
   strength?: PasswordStrength
   showStrengthIndicator?: boolean
+  showToggle?: boolean
 }
 
 /**

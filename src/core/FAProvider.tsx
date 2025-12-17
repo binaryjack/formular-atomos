@@ -83,6 +83,7 @@ export const FAProvider = ({
           min: field.validation?.min ?? null,
           max: field.validation?.max ?? null,
           pattern: field.validation?.pattern ?? null,
+          guide: field.validation?.guide ?? undefined,
           error: errors[field.name] || ''
         },
         isValid: !errors[field.name],

@@ -94,7 +94,7 @@ export const FormProvider = ({
 
 // Mock form components - these are controlled components that get values from context
 export const FormInput = forwardRef<HTMLInputElement, React.ComponentPropsWithRef<'input'>>((props, ref) => {
-  const { id, type = 'text', ...restProps } = props
+  const { id, type = 'text', helpText, testId, ...restProps } = props as any
   const { fields, errors, handleChange, handleBlur } = useFormContext()
   const [isFocused, setIsFocused] = React.useState(false)
   
@@ -120,6 +120,7 @@ export const FormInput = forwardRef<HTMLInputElement, React.ComponentPropsWithRe
       type={type}
       value={value}
       data-focused={isFocused}
+      data-testid={testId}
       onChange={(e) => {
         if (id) {
           handleChange(id, e.target.value)
@@ -323,3 +324,59 @@ export const ErrorMessage = (props: React.PropsWithChildren<{ className?: string
 export const HelpText = (props: React.PropsWithChildren<{ className?: string; id?: string }>) => {
   return <div className={`text-gray-600 text-sm mt-1 ${props.className || ''}`}>{props.children}</div>
 }
+
+export interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
+  variant?: 'primary' | 'secondary' | 'danger'
+  size?: 'sm' | 'md' | 'lg'
+  isLoading?: boolean
+}
+
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ 
+  variant = 'primary', 
+  size = 'md',
+  isLoading = false,
+  className = '',
+  children,
+  disabled,
+  ...props 
+}, ref) => {
+  const baseStyles = 'font-medium rounded-lg transition-colors inline-flex items-center justify-center gap-2'
+  
+  const variantStyles = {
+    primary: 'bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50 disabled:cursor-not-allowed',
+    secondary: 'bg-gray-600 hover:bg-gray-700 text-white disabled:opacity-50 disabled:cursor-not-allowed',
+    danger: 'bg-red-600 hover:bg-red-700 text-white disabled:opacity-50 disabled:cursor-not-allowed'
+  }
+  
+  const sizeStyles = {
+    sm: 'py-1 px-3 text-sm',
+    md: 'py-2 px-4',
+    lg: 'py-3 px-6 text-lg'
+  }
+  
+  return (
+    <button
+      ref={ref}
+      className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+      disabled={disabled || isLoading}
+      {...props}
+    >
+      {isLoading && (
+        <svg 
+          className="animate-spin flex-shrink-0" 
+          width="16" 
+          height="16" 
+          xmlns="http://www.w3.org/2000/svg" 
+          fill="none" 
+          viewBox="0 0 24 24"
+        >
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      )}
+      {children}
+    </button>
+  )
+})
+
+Button.displayName = 'Button'

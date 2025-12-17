@@ -1,8 +1,8 @@
 'use client'
 
 import type { FAField } from '@formular/atomos'
-import { FAInput, FASet } from '@formular/atomos'
-import { FormDemo } from '../../../components/FormDemo'
+import { FAButton, FAInput, FAPassword } from '@formular/atomos'
+import { FormDemo, useFormSubmit } from '../../../components/FormDemo'
 
 const loginFields: FAField[] = [
   {
@@ -31,7 +31,7 @@ const loginFields: FAField[] = [
   },
 ]
 
-const codeExample = `import { FAProvider, FAInput, FASet } from '@formular/atomos'
+const codeExample = `import { FAProvider, FAInput, FAPassword, FAButton } from '@formular/atomos'
 
 function LoginForm() {
   const handleSubmit = async (data: FAField[]) => {
@@ -42,26 +42,20 @@ function LoginForm() {
   return (
     <FAProvider fields={loginFields} onSubmit={handleSubmit}>
       <div className="space-y-4">
-        <FASet id="email">
-          <FAInput id="email" />
-        </FASet>
+        <FAInput id="email" />
+        <FAPassword id="password" showToggle />
 
-        <FASet id="password">
-          <FAInput id="password" />
-        </FASet>
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded"
-        >
+        <FAButton type="submit" variant="primary" className="w-full">
           Sign In
-        </button>
+        </FAButton>
       </div>
     </FAProvider>
   )
 }`
 
-const configExample = `const loginFields: FAField[] = [
+const configExample = `import { IFieldDescriptor } from 'formular.dev'
+
+const loginFields: IFieldDescriptor[] = [
   {
     name: 'email',
     label: 'Email',
@@ -98,22 +92,27 @@ export function LoginFormExample() {
       codeExample={codeExample}
       configExample={configExample}
     >
-      <div className="space-y-4">
-        <FASet id="email">
-          <FAInput id="email" />
-        </FASet>
-
-        <FASet id="password">
-          <FAInput id="password" />
-        </FASet>
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
-        >
-          Sign In
-        </button>
-      </div>
+      <LoginFormFields />
     </FormDemo>
+  )
+}
+
+function LoginFormFields() {
+  const { isSubmitting } = useFormSubmit()
+  
+  return (
+    <div className="space-y-4">
+      <FAInput id="email" />
+      <FAPassword id="password" showToggle />
+
+      <FAButton
+        type="submit"
+        variant="primary"
+        className="w-full"
+        isLoading={isSubmitting}
+      >
+        Sign In
+      </FAButton>
+    </div>
   )
 }

@@ -8,6 +8,7 @@ export { FAProvider } from './core/FAProvider'
 export { useFAAdapter } from './core/hooks/useFAAdapter'
 
 // Components
+export { FAButton } from './components/FAButton'
 export { FACheckbox } from './components/FACheckbox'
 export { FADatePicker } from './components/FADatePicker'
 export { FAEmail } from './components/FAEmail'
