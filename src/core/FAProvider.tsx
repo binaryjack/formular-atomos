@@ -8,7 +8,7 @@ import { FormProvider as AtomosFormProvider, FormField } from '@atomos/ui'
 import React, { useMemo } from 'react'
 import { FAAdapter } from './FAAdapter'
 
-export interface FAProviderProps extends Omit<FAProviderConfig, 'onSubmit'> {
+export interface FAProviderProps extends Omit<FAProviderConfig, 'onSubmit' | 'formName'> {
   children: React.ReactNode
   formName?: string
   onSubmit: (data: FAField[]) => void | Promise<void>

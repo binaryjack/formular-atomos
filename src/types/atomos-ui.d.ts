@@ -166,4 +166,16 @@ declare module '@atomos/ui' {
     id?: string
     children: ReactNode
   }>
+
+  // Adapter type
+  export interface FormAdapter {}
+
+  // Button
+  export interface ButtonProps extends ComponentPropsWithRef<'button'> {
+    variant?: 'primary' | 'secondary' | 'ghost' | 'danger'
+    size?: 'sm' | 'md' | 'lg'
+    isLoading?: boolean
+    children: ReactNode
+  }
+  export const Button: React.ForwardRefExoticComponent<ButtonProps>
 }

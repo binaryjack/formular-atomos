@@ -5,6 +5,10 @@
 
 import React, { createContext, forwardRef, useContext } from 'react'
 
+// Stub types expected by src/types/index.ts
+export interface FormAdapter {}
+export interface FormState { fields: FormField[]; errors: Record<string, string>; isValid: boolean }
+
 export interface FormField {
   name: string
   label: string

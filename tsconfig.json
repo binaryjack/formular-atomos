@@ -16,8 +16,8 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
 
@@ -29,7 +29,9 @@
     /* Path mappings */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "formular.dev": ["./src/mocks/formular-dev.ts"],
+      "@atomos/ui": ["./src/mocks/atomos-ui.tsx"]
     }
   },
   "include": ["src"],

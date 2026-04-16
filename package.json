@@ -56,6 +56,10 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
+  "peerDependenciesMeta": {
+    "@atomos/ui": { "optional": true },
+    "formular.dev": { "optional": true }
+  },
   "devDependencies": {
     "@playwright/test": "^1.57.0",
     "@testing-library/dom": "^9.3.4",

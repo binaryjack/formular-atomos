@@ -23,4 +23,18 @@ declare module 'formular.dev' {
 
   export function createForm(config: FormularConfig): Record<string, unknown>
   export const validators: Record<string, unknown>
+
+  // Core manager interfaces (stubs until formular.dev is published)
+  export interface IDomManager {}
+  export interface IExtendedInput {}
+  export interface IFieldDescriptor { name: string }
+  export interface IFormDescriptor { fields: IFieldDescriptor[] }
+  export interface IFormular {}
+  export interface IFormularManager {}
+  export interface IInputFactory {}
+  export interface INotificationManager {}
+  export interface IServiceManager {}
+  export interface IStyleManager {}
+  export interface IValidationManager {}
+  export interface IValueManager {}
 }

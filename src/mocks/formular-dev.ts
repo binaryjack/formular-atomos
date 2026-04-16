@@ -14,3 +14,17 @@ export const FormularValidator: FormularValidator = {
 }
 
 export default FormularValidator
+
+// Stub interfaces for formular.dev types (not yet published)
+export interface IDomManager {}
+export interface IExtendedInput {}
+export interface IFieldDescriptor { name: string }
+export interface IFormDescriptor { fields: IFieldDescriptor[] }
+export interface IFormular {}
+export interface IFormularManager {}
+export interface IInputFactory {}
+export interface INotificationManager {}
+export interface IServiceManager {}
+export interface IStyleManager {}
+export interface IValidationManager {}
+export interface IValueManager {}
