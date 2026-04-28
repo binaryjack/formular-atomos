@@ -375,7 +375,7 @@ await adapter.validateField('email')
    - Complex/country-specific → Formular validators
 
 3. **Performance:**
-   - Memoize field definitions with `useMemo`
+   - Memoize field definitions with ```jsx useMemo```
    - Avoid inline functions in field definitions
    - Use `validateOnBlur` for expensive validations
 
