@@ -25,7 +25,6 @@
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": false,
-
     /* Path mappings */
     "baseUrl": ".",
     "paths": {
@@ -35,5 +34,13 @@
     }
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist", "**/*.stories.tsx", "**/*.test.tsx", "**/*.test.ts", "**/__tests__/**", "**/test-setup.ts"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.stories.tsx",
+    "**/*.test.tsx",
+    "**/*.test.ts",
+    "**/__tests__/**",
+    "**/test-setup.ts"
+  ]
 }
