@@ -51,8 +51,8 @@
     "url": "https://github.com/binaryjack/formular-atomos.git"
   },
   "peerDependencies": {
-    "@atomos/ui": "^1.0.0",
-    "formular.dev": "^1.0.0",
+    "@atomos/ui": "workspace:*",
+    "formular.dev": "workspace:*",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
