@@ -23,6 +23,7 @@
     "demo": "cd demo && pnpm dev",
     "demo:build": "cd demo && pnpm build",
     "demo:start": "cd demo && pnpm start",
+    "deploy:showcase": "cd packages/showcase && pnpm build && cd ../.. && rm -rf docs && mv packages/showcase/out docs && echo > docs/.nojekyll",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
@@ -61,6 +62,8 @@
     "formular.dev": { "optional": true }
   },
   "devDependencies": {
+    "@atomos/ui": "workspace:*",
+    "formular.dev": "file:../formular.dev",
     "@playwright/test": "^1.57.0",
     "@testing-library/dom": "^9.3.4",
     "@testing-library/jest-dom": "^6.1.5",

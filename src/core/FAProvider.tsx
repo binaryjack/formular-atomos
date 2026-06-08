@@ -8,14 +8,16 @@ import { FormProvider as AtomosFormProvider, FormField } from '@atomos/ui'
 import React, { useMemo } from 'react'
 import { FAAdapter } from './FAAdapter'
 
-export interface FAProviderProps extends Omit<FAProviderConfig, 'onSubmit' | 'formName'> {
+export interface FAProviderProps extends Partial<Omit<FAProviderConfig, 'onSubmit' | 'formName'>> {
   children: React.ReactNode
   formName?: string
-  onSubmit: (data: FAField[]) => void | Promise<void>
+  onSubmit: (data: any) => void | Promise<void>
+  form?: any
 }
 
 export const FAProvider = ({
-  fields: initialFields,
+  fields: initialFields = [],
+  form,
   formName,
   // locale = 'en', // TODO: implement locale support
   onSubmit,
@@ -26,7 +28,30 @@ export const FAProvider = ({
   resetLabel = 'Reset',
   children
 }: FAProviderProps) => {
-  const [fields, setFields] = React.useState<FAField[]>(initialFields)
+  const derivedFields = React.useMemo(() => {
+    if (initialFields.length > 0) return initialFields
+    if (form && form.shape) {
+      return Object.keys(form.shape).map((key, i) => ({
+        id: i,
+        name: key,
+        label: key,
+        type: 'text',
+        value: '',
+        defaultValue: '',
+        isValid: false,
+        isDirty: false,
+        isPristine: true,
+        isFocus: false,
+        shouldValidate: true,
+        errors: [],
+        guides: [],
+        options: []
+      } as any))
+    }
+    return []
+  }, [initialFields, form])
+
+  const [fields, setFields] = React.useState<FAField[]>(derivedFields)
   const [errors, setErrors] = React.useState<Record<string, string>>({})
 
   // Stable callbacks for adapter
@@ -52,12 +77,12 @@ export const FAProvider = ({
   // Create adapter once with stable callbacks
   const adapter = useMemo(
     () =>
-      new FAAdapter(initialFields, {
+      new FAAdapter(derivedFields, {
         onFieldChange,
         onFieldBlur,
         onErrorChange
       }),
-    [initialFields, onFieldChange, onFieldBlur, onErrorChange]
+    [derivedFields, onFieldChange, onFieldBlur, onErrorChange]
   )
 
   // Wire up adapter to handle changes and validation

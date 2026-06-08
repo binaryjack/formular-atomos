@@ -36,5 +36,23 @@ dist/
 .env.development.local
 .env.test.local
 .env.production.local
-e2e-results
-e2e-results/*
+
+# Playwright & E2E
+e2e-results/
+playwright-report/
+test-results/
+blob-report/
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# TypeScript
+*.tsbuildinfo
+
+# Storybook
+storybook-static/
+
+# Package managers
+pnpm-debug.log*

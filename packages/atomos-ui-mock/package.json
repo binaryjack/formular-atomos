@@ -4,6 +4,9 @@
   "description": "Mock Atomos UI components for Formular Atomos demo",
   "main": "./index.tsx",
   "types": "./index.tsx",
+  "exports": {
+    ".": "./index.tsx"
+  },
   "peerDependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
