@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@binaryjack/formular.dev':
+        specifier: ^2.1.0
+        version: 2.1.0
     devDependencies:
       '@atomos/ui':
         specifier: workspace:*
@@ -60,8 +64,8 @@ importers:
         specifier: ^4.6.0
         version: 4.6.2(eslint@8.57.1)
       formular.dev:
-        specifier: npm:@binaryjack/formular.dev@^2.1.0
-        version: /@binaryjack/formular.dev@2.1.0
+        specifier: npm:@binaryjack/formular.dev@^2.1.1
+        version: /@binaryjack/formular.dev@2.1.1
       happy-dom:
         specifier: ^12.10.3
         version: 12.10.3
@@ -399,6 +403,11 @@ packages:
 
   /@binaryjack/formular.dev@2.1.0:
     resolution: {integrity: sha512-TSBr5X92BW0UK7+6AzT72dWJpgFt6NMXGYXhv+G06cFyy0WFg8FUzpzWgZWsMDDMF/MOpzT03joeTqv4ALvdkA==}
+    dev: false
+
+  /@binaryjack/formular.dev@2.1.1:
+    resolution: {integrity: sha512-kx9nx00bS9wcDnW0oBsgWtxv8JMdhGRrMPuaIS9lFcmzl/XVCol1O2FUlk641EuzxIcl5cndAbrzDx7Utoykhw==}
+    dev: true
 
   /@emnapi/core@1.7.1:
     resolution: {integrity: sha512-o1uhUASyo921r2XtHYOHy7gdkGLge8ghBEQHMWmyJFoXlpU58kIrhhN3w26lpQb6dspetweapMn2CSNwQ8I4wg==}
