@@ -188,21 +188,6 @@ export class FAAdapter implements FAAdapterMethods {
       }
     }
 
-    // If individual fields are valid, we can do a final object-level validation 
-    // to catch any cross-field constraints
-    if (isValid && this.formSchema) {
-      const data = this.getValidatedData()
-      const result = this.formSchema.safeParse(data)
-      
-      if (!result.success) {
-        isValid = false
-        const path = result.error.path?.[0]
-        if (path) {
-          this.setFieldError(path as string, result.error.message)
-        }
-      }
-    }
-
     return isValid
   }
 
