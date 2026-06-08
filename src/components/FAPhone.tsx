@@ -8,7 +8,7 @@ import { FormInput } from '@atomos/ui'
 import { forwardRef } from 'react'
 
 export const FAPhone = forwardRef<HTMLInputElement, FAPhoneProps>(
-  ({ id, country, className, placeholder, helpText, disabled = false, testId }, ref) => {
+  ({ id, country, className, placeholder, helpText, disabled = false, testId, guide: propGuide }, ref) => {
     const countryData = COUNTRIES[country]
     const defaultHelpText = `Format: ${countryData.phoneFormat}`
     const finalHelpText = helpText || defaultHelpText

@@ -9,7 +9,7 @@ import { FormSelect } from '@atomos/ui'
 import { forwardRef } from 'react'
 
 export const FASelect = forwardRef<HTMLSelectElement, FASelectProps>(
-  ({ id, children, className, helpText, disabled = false, testId }, ref) => {
+  ({ id, children, className, helpText, disabled = false, testId, guide: propGuide }, ref) => {
     const { field } = useFAField(id)
 
     if (!field) return null

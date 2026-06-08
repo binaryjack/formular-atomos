@@ -9,7 +9,7 @@ import { useFAField } from '../core/hooks/useFAField'
 import type { FADatePickerProps } from '../types/component.types'
 
 export const FADatePicker = forwardRef<HTMLInputElement, FADatePickerProps>(
-  ({ id, className, disabled = false, min, max, testId: _testId }, ref) => {
+  ({ id, className, disabled = false, min, max, testId: _testId, guide: propGuide }, ref) => {
     const { field, error, handleChange, handleBlur } = useFAField(id)
 
     if (!field) return null

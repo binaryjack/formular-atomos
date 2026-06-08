@@ -211,6 +211,11 @@ export class FAAdapter implements FAAdapterMethods {
     console.log('[FAAdapter.submit] Current fields:', this.fields)
     console.log('[FAAdapter.submit] Current errors:', this.errors)
     
+    // Mark all fields as touched upon submission to enforce real-time feedback
+    for (const field of this.fields) {
+      this.touched[field.name] = true
+    }
+
     // Fallback to basic validation
     const isValid = await this.validateAll()
     
@@ -268,10 +273,8 @@ export class FAAdapter implements FAAdapterMethods {
     // Fallback
     this.onFieldChange(fieldName, value)
     
-    // If field was touched, re-validate on change to clear errors immediately
-    if (this.touched[fieldName]) {
-      this.validateField(fieldName)
-    }
+    // Always validate on change to ensure real-time feedback
+    this.validateField(fieldName)
   }
 
   async handleBlur(fieldName: string): Promise<void> {

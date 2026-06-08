@@ -20,13 +20,14 @@ export const FAPassword = forwardRef<HTMLInputElement, FAPasswordProps>(
       strength: _strength = 'medium',
       showStrengthIndicator: _showStrengthIndicator = false,
       showToggle = false,
-      testId
+      testId,
+      guide: propGuide
     },
     ref
   ) => {
     const [isVisible, setIsVisible] = useState(false)
     const [isFocused, setIsFocused] = useState(false)
-    const { field, error, guide } = useFAField(id)
+    const { field, error, guide: fieldGuide } = useFAField(id)
 
     useEffect(() => {
       const input = document.getElementById(id)
@@ -85,7 +86,7 @@ export const FAPassword = forwardRef<HTMLInputElement, FAPasswordProps>(
         </div>
         <FASetValidationResult 
           errors={error} 
-          guides={guide}
+          guides={propGuide || fieldGuide}
           isFocused={isFocused}
         />
       </div>

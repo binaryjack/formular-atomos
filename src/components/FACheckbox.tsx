@@ -7,7 +7,7 @@ import { FormCheckbox } from '@atomos/ui'
 import { forwardRef } from 'react'
 
 export const FACheckbox = forwardRef<HTMLInputElement, FACheckboxProps>(
-  ({ id, className, helpText, disabled = false, testId: _testId }, ref) => {
+  ({ id, className, helpText, disabled = false, testId: _testId, guide: propGuide }, ref) => {
     return (
       <FormCheckbox
         ref={ref}

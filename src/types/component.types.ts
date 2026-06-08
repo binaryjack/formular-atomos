@@ -19,6 +19,8 @@ export interface FABaseProps {
   disabled?: boolean
   /** Test ID for testing */
   testId?: string
+  /** Guide message to show on focus */
+  guide?: string
 }
 
 /**

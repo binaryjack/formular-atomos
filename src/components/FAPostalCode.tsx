@@ -8,7 +8,7 @@ import { FormInput } from '@atomos/ui'
 import { forwardRef } from 'react'
 
 export const FAPostalCode = forwardRef<HTMLInputElement, FAPostalCodeProps>(
-  ({ id, country, className, placeholder, helpText, disabled = false, testId }, ref) => {
+  ({ id, country, className, placeholder, helpText, disabled = false, testId, guide: propGuide }, ref) => {
     const countryData = COUNTRIES[country]
     const defaultHelpText = `Format: ${countryData.postalFormat}`
     const finalHelpText = helpText || defaultHelpText

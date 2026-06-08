@@ -16,16 +16,10 @@ export interface FASetValidationResultProps {
 }
 
 export const FASetValidationResult = ({ errors, guides, isFocused = false }: FASetValidationResultProps) => {
-  // Ensure guide exists, log if missing
-  if (!guides) {
-    console.warn('[FASetValidationResult] No guide message provided')
-    guides = '[DEBUG: No guide message configured]'
-  }
-
   const hasError = !!errors
 
-  // If validation error AND focused → show guide
-  if (hasError && isFocused) {
+  // If validation error AND focused AND we have a guide → show guide
+  if (hasError && isFocused && guides) {
     return (
       <div className="mt-1 text-sm !text-green-400" style={{ color: '#4ade80' }}>
         {guides}

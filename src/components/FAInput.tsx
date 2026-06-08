@@ -10,9 +10,9 @@ import { useFAField } from '../core/hooks/useFAField'
 import { FASetValidationResult } from './FASetValidationResult'
 
 export const FAInput = forwardRef<HTMLInputElement, FAInputProps>(
-  ({ id, className, placeholder, helpText, disabled = false, maxLength, testId }, ref) => {
+  ({ id, className, placeholder, helpText, disabled = false, maxLength, testId, guide: propGuide }, ref) => {
     const [isFocused, setIsFocused] = useState(false)
-    const { field, error, guide } = useFAField(id)
+    const { field, error, guide: fieldGuide } = useFAField(id)
 
     useEffect(() => {
       const input = document.getElementById(id)
@@ -52,7 +52,7 @@ export const FAInput = forwardRef<HTMLInputElement, FAInputProps>(
         </div>
         <FASetValidationResult 
           errors={error} 
-          guides={guide}
+          guides={propGuide || fieldGuide}
           isFocused={isFocused}
         />
       </div>
