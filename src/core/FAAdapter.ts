@@ -188,6 +188,26 @@ export class FAAdapter implements FAAdapterMethods {
       }
     }
 
+    // If individual fields are valid, we can do a final object-level validation 
+    // to catch any cross-field constraints
+    if (isValid && this.formSchema) {
+      const data = this.getValidatedData()
+      console.log('[FAAdapter.validateAll] getValidatedData returned:', data)
+      const result = this.formSchema.safeParse(data)
+      console.log('[FAAdapter.validateAll] safeParse result:', result)
+      
+      if (!result.success) {
+        isValid = false
+        const path = result.error.path?.[0]
+        console.log('[FAAdapter.validateAll] Extracted path:', path)
+        if (path) {
+          this.setFieldError(path as string, result.error.message)
+        } else {
+          console.warn('[FAAdapter.validateAll] Validation failed but no path was provided. Error:', result.error)
+        }
+      }
+    }
+
     return isValid
   }
 
