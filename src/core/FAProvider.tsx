@@ -15,8 +15,10 @@ export interface FAProviderProps extends Partial<Omit<FAProviderConfig, 'onSubmi
   form?: any
 }
 
+const DEFAULT_FIELDS: FAField[] = []
+
 export const FAProvider = ({
-  fields: initialFields = [],
+  fields: initialFields = DEFAULT_FIELDS,
   form,
   formName,
   // locale = 'en', // TODO: implement locale support

@@ -1,10 +1,10 @@
 'use client'
 
-import { FormInput, FormProvider } from '@atomos/ui'
+import { FormInput, FormProvider, FormField } from '@atomos/ui'
 import { useState } from 'react'
 
 export default function TestSimplePage() {
-  const [fields, setFields] = useState([
+  const [fields, setFields] = useState<FormField[]>([
     { name: 'test', label: 'Test', value: '' }
   ])
 
