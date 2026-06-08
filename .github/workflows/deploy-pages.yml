@@ -29,8 +29,6 @@ jobs:
         with:
           node-version: "20"
           cache: "pnpm"
-      - name: Clone formular.dev
-        run: git clone https://github.com/binaryjack/formular.dev.git ../formular.dev
       - name: Install dependencies
         run: pnpm install
       - name: Build Root Library

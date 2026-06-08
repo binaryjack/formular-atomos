@@ -60,8 +60,8 @@ importers:
         specifier: ^4.6.0
         version: 4.6.2(eslint@8.57.1)
       formular.dev:
-        specifier: file:../formular.dev
-        version: file:../formular.dev
+        specifier: npm:@binaryjack/formular.dev@^2.1.0
+        version: /@binaryjack/formular.dev@2.1.0
       happy-dom:
         specifier: ^12.10.3
         version: 12.10.3
@@ -165,8 +165,8 @@ importers:
         specifier: workspace:*
         version: link:../..
       formular.dev:
-        specifier: file:../../../formular.dev
-        version: file:../formular.dev
+        specifier: npm:@binaryjack/formular.dev@^2.1.0
+        version: /@binaryjack/formular.dev@2.1.0
       next:
         specifier: 16.2.7
         version: 16.2.7(@playwright/test@1.57.0)(react-dom@19.2.4)(react@19.2.4)
@@ -396,6 +396,9 @@ packages:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
     dev: true
+
+  /@binaryjack/formular.dev@2.1.0:
+    resolution: {integrity: sha512-TSBr5X92BW0UK7+6AzT72dWJpgFt6NMXGYXhv+G06cFyy0WFg8FUzpzWgZWsMDDMF/MOpzT03joeTqv4ALvdkA==}
 
   /@emnapi/core@1.7.1:
     resolution: {integrity: sha512-o1uhUASyo921r2XtHYOHy7gdkGLge8ghBEQHMWmyJFoXlpU58kIrhhN3w26lpQb6dspetweapMn2CSNwQ8I4wg==}
@@ -7774,7 +7777,3 @@ packages:
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: false
-
-  file:../formular.dev:
-    resolution: {directory: ../formular.dev, type: directory}
-    name: '@binaryjack/formular.dev'

@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@atomos/ui": "workspace:*",
-    "formular.dev": "file:../formular.dev",
+    "formular.dev": "npm:@binaryjack/formular.dev@^2.1.0",
     "@playwright/test": "^1.57.0",
     "@testing-library/dom": "^9.3.4",
     "@testing-library/jest-dom": "^6.1.5",

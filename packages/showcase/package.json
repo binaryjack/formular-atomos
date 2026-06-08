@@ -11,7 +11,7 @@
   "dependencies": {
     "@atomos/ui": "workspace:*",
     "@formular/atomos": "workspace:*",
-    "formular.dev": "file:../../../formular.dev",
+    "formular.dev": "npm:@binaryjack/formular.dev@^2.1.0",
     "next": "16.2.7",
     "react": "19.2.4",
     "react-dom": "19.2.4"
