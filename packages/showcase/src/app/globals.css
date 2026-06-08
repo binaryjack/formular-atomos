@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@source "../../../src";
+@source "../../../packages/atomos-ui-mock";
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

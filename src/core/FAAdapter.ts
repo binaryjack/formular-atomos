@@ -55,10 +55,7 @@ export class FAAdapter implements FAAdapterMethods {
   private onFieldBlur: (name: string) => void
   private onErrorChange: (name: string, error: string) => void
   
-  // Agent architecture (will be fully implemented when formular.dev is linked)
-  private formularAgent: FormularAgent | null = null
-  private atomosAgent: AtomosAgent | null = null
-  private syncBridge: SyncBridge | null = null
+  private formSchema: any | null = null
 
   constructor(
     fields: FAField[],
@@ -66,7 +63,8 @@ export class FAAdapter implements FAAdapterMethods {
       onFieldChange: (name: string, value: unknown) => void
       onFieldBlur: (name: string) => void
       onErrorChange: (name: string, error: string) => void
-    }
+    },
+    form?: any
   ) {
     this.fields = fields
     this.errors = {}
@@ -74,9 +72,7 @@ export class FAAdapter implements FAAdapterMethods {
     this.onFieldChange = callbacks.onFieldChange
     this.onFieldBlur = callbacks.onFieldBlur
     this.onErrorChange = callbacks.onErrorChange
-    
-    // TODO: Initialize agents when formular.dev is properly linked
-    // this.initializeAgents()
+    this.formSchema = form
   }
   
   /**
@@ -150,21 +146,26 @@ export class FAAdapter implements FAAdapterMethods {
   }
 
   async validateField(fieldName: string): Promise<boolean> {
-    // TODO: Use FormularAgent when available
-    // if (this.formularAgent) {
-    //   const field = this.formularAgent.getField(fieldName)
-    //   // Trigger validation through FormularAgent
-    //   return await this.formularAgent.validate()
-    // }
-    
-    // Fallback to basic validation for now
     const field = this.fields.find((f) => f.name === fieldName)
     if (!field) return false
 
-    // Get current value
     const value = field.value
 
-    // Run validation
+    // Use formular.dev engine natively
+    if (this.formSchema && this.formSchema.shape && this.formSchema.shape[fieldName]) {
+      const fieldSchema = this.formSchema.shape[fieldName]
+      const result = fieldSchema.safeParse(value)
+      
+      if (!result.success) {
+        this.setFieldError(fieldName, result.error.message)
+        return false
+      } else {
+        this.clearFieldError(fieldName)
+        return true
+      }
+    }
+
+    // Fallback if no schema is provided
     const error = this.runValidation(field, value)
     
     if (error) {
@@ -177,18 +178,28 @@ export class FAAdapter implements FAAdapterMethods {
   }
 
   async validateAll(): Promise<boolean> {
-    // TODO: Use FormularAgent when available
-    // if (this.formularAgent) {
-    //   return await this.formularAgent.validate()
-    // }
-    
-    // Fallback to basic validation
     let isValid = true
 
+    // Validate all individual fields to ensure their error states are updated
     for (const field of this.fields) {
       const fieldValid = await this.validateField(field.name)
       if (!fieldValid) {
         isValid = false
+      }
+    }
+
+    // If individual fields are valid, we can do a final object-level validation 
+    // to catch any cross-field constraints
+    if (isValid && this.formSchema) {
+      const data = this.getValidatedData()
+      const result = this.formSchema.safeParse(data)
+      
+      if (!result.success) {
+        isValid = false
+        const path = result.error.path?.[0]
+        if (path) {
+          this.setFieldError(path as string, result.error.message)
+        }
       }
     }
 
@@ -300,9 +311,7 @@ export class FAAdapter implements FAAdapterMethods {
    * Cleanup resources
    */
   dispose(): void {
-    this.formularAgent?.dispose()
-    this.atomosAgent?.dispose()
-    this.syncBridge?.dispose()
+    this.formSchema = null
   }
 
   private runValidation(field: FAField, value: unknown): string | null {

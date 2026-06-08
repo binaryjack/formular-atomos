@@ -81,8 +81,8 @@ export const FAProvider = ({
         onFieldChange,
         onFieldBlur,
         onErrorChange
-      }),
-    [derivedFields, onFieldChange, onFieldBlur, onErrorChange]
+      }, form),
+    [derivedFields, onFieldChange, onFieldBlur, onErrorChange, form]
   )
 
   // Wire up adapter to handle changes and validation
