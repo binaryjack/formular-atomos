@@ -12,12 +12,13 @@ export default function PlaygroundLayout({
   const pathname = usePathname();
 
   const navItems = [
-    { name: "React (@formular/atomos)", path: "/playground/react" },
-    { name: "Vue.js (Composition API)", path: "/playground/vue" },
-    { name: "Svelte (Stores)", path: "/playground/svelte" },
-    { name: "Solid JS (Signals)", path: "/playground/solid" },
-    { name: "Angular (Reactive)", path: "/playground/angular" },
-    { name: "Vanilla JS (DOM API)", path: "/playground/vanilla" },
+    { name: "React (@formular/atomos)", path: "/playground/react", doc: "https://react.dev" },
+    { name: "Vue.js (Composition API)", path: "/playground/vue", doc: "https://vuejs.org" },
+    { name: "Svelte (Stores)", path: "/playground/svelte", doc: "https://svelte.dev" },
+    { name: "Solid JS (Signals)", path: "/playground/solid", doc: "https://solidjs.com" },
+    { name: "Synetics (Signals)", path: "/playground/synetics", doc: "https://github.com/binaryjack/synetics.dev" },
+    { name: "Angular (Reactive)", path: "/playground/angular", doc: "https://angular.io" },
+    { name: "Vanilla JS (DOM API)", path: "/playground/vanilla", doc: "https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model" },
   ];
 
   return (
@@ -45,17 +46,21 @@ export default function PlaygroundLayout({
               {navItems.map((item) => {
                 const isActive = pathname === item.path || (item.path === "/playground/react" && pathname === "/playground");
                 return (
-                  <Link
-                    key={item.path}
-                    href={item.path}
-                    className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 block border ${
-                      isActive
-                        ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/20 shadow-md shadow-indigo-500/5 font-semibold"
-                        : "text-slate-400 border-transparent hover:text-white hover:bg-white/5"
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
+                  <div key={item.path} className="flex items-center gap-2">
+                    <Link
+                      href={item.path}
+                      className={`flex-1 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 block border ${
+                        isActive
+                          ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/20 shadow-md shadow-indigo-500/5 font-semibold"
+                          : "text-slate-400 border-transparent hover:text-white hover:bg-white/5"
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                    <a href={item.doc} target="_blank" rel="noreferrer" className="text-slate-500 hover:text-indigo-400 p-2" title="Official Documentation">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    </a>
+                  </div>
                 );
               })}
             </nav>

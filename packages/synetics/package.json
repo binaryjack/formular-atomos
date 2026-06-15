@@ -1,0 +1,18 @@
+{
+  "name": "@formular/synetics",
+  "version": "0.1.0",
+  "description": "Synetics wrapper for Formular.dev",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "formular.dev": "workspace:*",
+    "@synetics/synetics.dev": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "formular.dev": "workspace:*",
+    "@synetics/synetics.dev": "workspace:*"
+  }
+}
