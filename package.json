@@ -1,5 +1,5 @@
 {
-  "name": "@formular/atomos",
+  "name": "@binaryjack/formular-atomos",
   "version": "0.1.0",
   "description": "React form components bridging Atomos UI and Formular.dev validation",
   "main": "./dist/index.js",

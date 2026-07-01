@@ -1,5 +1,5 @@
 {
-  "name": "@formular/synetics",
+  "name": "@binaryjack/synetics",
   "version": "0.1.0",
   "description": "Synetics wrapper for Formular.dev",
   "main": "src/index.ts",
@@ -7,12 +7,12 @@
     "build": "tsc"
   },
   "peerDependencies": {
-    "formular.dev": "workspace:*",
-    "@synetics/synetics.dev": "workspace:*"
+    "formular.dev": "npm:@binaryjack/formular.dev@^2.1.1",
+    "@synetics/synetics.dev": "latest"
   },
   "devDependencies": {
     "typescript": "^5.9.3",
-    "formular.dev": "workspace:*",
-    "@synetics/synetics.dev": "workspace:*"
+    "formular.dev": "npm:@binaryjack/formular.dev@^2.1.1",
+    "@synetics/synetics.dev": "latest"
   }
 }

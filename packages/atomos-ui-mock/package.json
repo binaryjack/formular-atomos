@@ -1,6 +1,7 @@
 {
   "name": "@atomos/ui",
   "version": "1.0.0",
+  "private": true,
   "description": "Mock Atomos UI components for Formular Atomos demo",
   "main": "./index.tsx",
   "types": "./index.tsx",

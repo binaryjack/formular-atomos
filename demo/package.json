@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@atomos/ui": "workspace:*",
-    "@formular/atomos": "workspace:*",
+    "@binaryjack/formular-atomos": "workspace:*",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^16.2.7",
