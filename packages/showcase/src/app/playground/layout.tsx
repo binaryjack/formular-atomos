@@ -21,6 +21,13 @@ export default function PlaygroundLayout({
     { name: "Vanilla JS (DOM API)", path: "/playground/vanilla", doc: "https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model" },
   ];
 
+  const uiVendors = [
+    { name: "Shadcn UI", path: "/playground/shadcn", doc: "https://ui.shadcn.com" },
+    { name: "Material UI (MUI)", path: "/playground/mui", doc: "https://mui.com" },
+    { name: "Ant Design", path: "/playground/ant-design", doc: "https://ant.design" },
+    { name: "Chakra UI", path: "/playground/chakra", doc: "https://chakra-ui.com" },
+  ];
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50 font-sans flex flex-col selection:bg-indigo-500/30">
       {/* Header */}
@@ -45,6 +52,30 @@ export default function PlaygroundLayout({
             <nav className="flex flex-col gap-1.5">
               {navItems.map((item) => {
                 const isActive = pathname === item.path || (item.path === "/playground/react" && pathname === "/playground");
+                return (
+                  <div key={item.path} className="flex items-center gap-2">
+                    <Link
+                      href={item.path}
+                      className={`flex-1 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 block border ${
+                        isActive
+                          ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/20 shadow-md shadow-indigo-500/5 font-semibold"
+                          : "text-slate-400 border-transparent hover:text-white hover:bg-white/5"
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                    <a href={item.doc} target="_blank" rel="noreferrer" className="text-slate-500 hover:text-indigo-400 p-2" title="Official Documentation">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    </a>
+                  </div>
+                );
+              })}
+            </nav>
+            
+            <div className="text-xs font-bold tracking-wider text-slate-500 uppercase mt-6 mb-4">UI Libraries (React)</div>
+            <nav className="flex flex-col gap-1.5">
+              {uiVendors.map((item) => {
+                const isActive = pathname === item.path;
                 return (
                   <div key={item.path} className="flex items-center gap-2">
                     <Link
