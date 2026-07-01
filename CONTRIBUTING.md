@@ -2,7 +2,7 @@
 
 Thank you for your interest in contributing! This guide will help you get started.
 
-## 📋 Table of Contents
+## Table of Contents
 
 1. [Code of Conduct](#code-of-conduct)
 2. [Getting Started](#getting-started)
@@ -17,10 +17,10 @@ Thank you for your interest in contributing! This guide will help you get starte
 
 We are committed to providing a welcoming and inclusive environment. Please:
 
-- ✅ Be respectful and constructive
-- ✅ Welcome newcomers and help them learn
-- ✅ Focus on what's best for the community
-- ❌ Don't harass, discriminate, or be disrespectful
+- Be respectful and constructive
+- Welcome newcomers and help them learn
+- Focus on what's best for the community
+- Don't harass, discriminate, or be disrespectful
 
 ---
 
@@ -99,9 +99,9 @@ npm run build
 
 ### TypeScript
 
-- ✅ **Strict mode enabled** — No `any`, use proper types
-- ✅ **Explicit return types** — For public functions
-- ✅ **JSDoc comments** — For all exported items
+- **Strict mode enabled** — No `any`, use proper types
+- **Explicit return types** — For public functions
+- **JSDoc comments** — For all exported items
 
 ```tsx
 /**
@@ -117,10 +117,10 @@ export function validateField(id: string, value: any): string | null {
 
 ### React Components
 
-- ✅ **Functional components** — With hooks
-- ✅ **ForwardRef** — For form inputs
-- ✅ **DisplayName** — Always set
-- ✅ **Props interface** — Export all prop types
+- **Functional components** — With hooks
+- **ForwardRef** — For form inputs
+- **DisplayName** — Always set
+- **Props interface** — Export all prop types
 
 ```tsx
 import React, { forwardRef } from 'react'
@@ -288,10 +288,10 @@ When adding a new component, ensure:
 
 ## Questions?
 
-- 💬 [Discussions](https://github.com/formular/atomos/discussions)
-- 🐛 [Issues](https://github.com/formular/atomos/issues)
-- 📧 Email: support@formular.dev
+- [Discussions](https://github.com/formular/atomos/discussions)
+- [Issues](https://github.com/formular/atomos/issues)
+- Email: support@formular.dev
 
 ---
 
-**Thank you for contributing! 🙏**
+**Thank you for contributing!**

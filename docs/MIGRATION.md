@@ -343,10 +343,10 @@ function MyForm() {
 
 ### Migration Benefits
 
-- ✅ **60% less boilerplate** — No manual state/error management
-- ✅ **Enterprise validation** — Formular.dev integration
-- ✅ **Type safety** — Full TypeScript support
-- ✅ **Cultural config** — Phone/postal for 12 countries
+- **60% less boilerplate** — No manual state/error management
+- **Enterprise validation** — Formular.dev integration
+- **Type safety** — Full TypeScript support
+- **Cultural config** — Phone/postal for 12 countries
 
 ---
 
@@ -445,10 +445,10 @@ function MyForm() {
 
 ### Migration Benefits
 
-- ✅ **Beautiful UI** — Atomos UI components included
-- ✅ **Accessibility** — WCAG 2.1 compliant
-- ✅ **Less wiring** — Formular validation auto-integrated
-- ✅ **Better DX** — TypeScript, Storybook, tests included
+- **Beautiful UI** — Atomos UI components included
+- **Accessibility** — WCAG 2.1 compliant
+- **Less wiring** — Formular validation auto-integrated
+- **Better DX** — TypeScript, Storybook, tests included
 
 ---
 

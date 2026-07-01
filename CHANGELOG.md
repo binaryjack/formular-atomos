@@ -65,13 +65,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial public release.
 
 ### Highlights
-- 🎨 Beautiful UI powered by Atomos
-- ✅ Enterprise validation via Formular.dev
-- 🌍 Multi-country phone/postal support
-- 📘 TypeScript-first with strict mode
-- ♿ WCAG 2.1 accessibility compliance
-- 🧪 95%+ test coverage
-- 📚 Comprehensive documentation
+- Beautiful UI powered by Atomos
+- Enterprise validation via Formular.dev
+- Multi-country phone/postal support
+- TypeScript-first with strict mode
+- WCAG 2.1 accessibility compliance
+- 95%+ test coverage
+- Comprehensive documentation
 
 ---
 

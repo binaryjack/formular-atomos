@@ -6,18 +6,18 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## ✨ Features
+## Features
 
-- **🎨 Beautiful UI** — Built on Atomos UI for stunning, accessible components
-- **✅ Enterprise Validation** — Powered by Formular.dev for robust validation
-- **🌍 Cultural Configuration** — Phone & postal code validation for 12 countries
-- **📘 TypeScript First** — Full type safety with strict mode
-- **♿ Accessibility** — WCAG 2.1 compliant via Atomos UI
-- **🎯 Simple API** — Declarative field configuration
-- **📦 Tree-shakeable** — Import only what you need
-- **🧪 Well Tested** — Comprehensive Vitest suite
+- **Beautiful UI** — Built on Atomos UI for stunning, accessible components
+- **Enterprise Validation** — Powered by Formular.dev for robust validation
+- **Cultural Configuration** — Phone & postal code validation for 12 countries
+- **TypeScript First** — Full type safety with strict mode
+- **Accessibility** — WCAG 2.1 compliant via Atomos UI
+- **Simple API** — Declarative field configuration
+- **Tree-shakeable** — Import only what you need
+- **Well Tested** — Comprehensive Vitest suite
 
-## 📦 Installation
+## Installation
 
 ```bash
 npm install @formular/atomos @atomos/ui formular.dev
@@ -28,7 +28,7 @@ npm install @formular/atomos @atomos/ui formular.dev
 - @atomos/ui ^1.0.0
 - formular.dev ^1.0.0
 
-## 🚀 Quick Start
+## Quick Start
 
 ```tsx
 import { FAProvider, FAInput, FAEmail, FAPassword, FACheckbox } from '@formular/atomos'
@@ -81,7 +81,7 @@ function RegistrationForm() {
 }
 ```
 
-## 📚 Components
+## Components
 
 ### Text Inputs
 - **FAInput** — General text input
@@ -101,21 +101,21 @@ function RegistrationForm() {
 - **FAPostalCode** — Postal code with country-specific validation
 - **FAFileUpload** — File upload with size/type validation
 
-## 🌍 Supported Countries
+## Supported Countries
 
 Phone and postal code validation for:
-- 🇺🇸 United States
-- 🇨🇦 Canada
-- 🇬🇧 United Kingdom
-- 🇩🇪 Germany
-- 🇫🇷 France
-- 🇨🇭 Switzerland
-- 🇮🇹 Italy
-- 🇪🇸 Spain
-- 🇦🇹 Austria
-- 🇳🇱 Netherlands
-- 🇧🇪 Belgium
-- 🇱🇺 Luxembourg
+- United States
+- Canada
+- United Kingdom
+- Germany
+- France
+- Switzerland
+- Italy
+- Spain
+- Austria
+- Netherlands
+- Belgium
+- Luxembourg
 
 ### Example: Multi-Country Form
 
@@ -160,7 +160,7 @@ function ContactForm() {
 }
 ```
 
-## 🎯 API Reference
+## API Reference
 
 ### FAProvider Props
 
@@ -192,7 +192,7 @@ interface FAField {
 }
 ```
 
-## 🧪 Testing
+## Testing
 
 ```bash
 npm test                 # Run tests
@@ -200,14 +200,14 @@ npm test -- --watch      # Watch mode
 npm test -- --coverage   # With coverage
 ```
 
-## 📖 Documentation
+## Documentation
 
 - [API Documentation](./docs/API.md) — Complete API reference
 - [Migration Guide](./docs/MIGRATION.md) — Migrate from other libraries
 - [Examples](./examples/README.md) — Working examples
 - [Storybook](https://storybook.formular-atomos.dev) — Interactive component demos
 
-## 🛠️ Development
+## Development
 
 ```bash
 # Install dependencies
@@ -229,25 +229,25 @@ npm run type-check
 npm run lint
 ```
 
-## 📄 License
+## License
 
 MIT © Formular Team
 
-## 🙏 Credits
+## Credits
 
 - **[Atomos UI](https://github.com/atomos/ui)** — Beautiful, accessible React components
 - **[Formular.dev](https://formular.dev)** — Enterprise-grade form validation
 
-## 🤝 Contributing
+## Contributing
 
 Contributions welcome! Please read our [Contributing Guide](./CONTRIBUTING.md) first.
 
-## 📞 Support
+## Support
 
-- 🐛 [Issues](https://github.com/formular/atomos/issues)
-- 💬 [Discussions](https://github.com/formular/atomos/discussions)
-- 📧 Email: support@formular.dev
+- [Issues](https://github.com/formular/atomos/issues)
+- [Discussions](https://github.com/formular/atomos/discussions)
+- Email: support@formular.dev
 
 ---
 
-**Made with ❤️ by the Formular Team**
+**Made with love by the Formular Team**
