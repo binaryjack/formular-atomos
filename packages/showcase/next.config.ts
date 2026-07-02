@@ -1,13 +1,14 @@
 import type { NextConfig } from "next";
 
 const isProd = process.env.NODE_ENV === 'production';
+const isGitHubActions = process.env.GITHUB_ACTIONS === 'true';
 const repoName = '/formular-atomos';
 
 const nextConfig: NextConfig = {
   output: 'export',
   distDir: 'out',
-  basePath: isProd ? repoName : '',
-  assetPrefix: isProd ? `${repoName}/` : '',
+  basePath: isProd && isGitHubActions ? repoName : '',
+  assetPrefix: isProd && isGitHubActions ? `${repoName}/` : '',
   images: {
     unoptimized: true,
   },

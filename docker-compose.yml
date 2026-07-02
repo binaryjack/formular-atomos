@@ -1,0 +1,9 @@
+services:
+  showcase:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: formular-showcase
+    restart: unless-stopped
+    ports:
+      - "3000:80"
