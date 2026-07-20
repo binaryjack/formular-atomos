@@ -5,8 +5,7 @@ const isGitHubActions = process.env.GITHUB_ACTIONS === 'true';
 const repoName = '/formular-atomos';
 
 const nextConfig: NextConfig = {
-  output: 'export',
-  distDir: 'out',
+  output: 'standalone',
   basePath: isProd && isGitHubActions ? repoName : '',
   assetPrefix: isProd && isGitHubActions ? `${repoName}/` : '',
   images: {
