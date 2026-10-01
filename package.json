@@ -95,6 +95,6 @@
     "vitest": "^1.6.1"
   },
   "dependencies": {
-    "@binaryjack/formular.dev": "file:/home/tadeop/dev/Codernic-Workspace/formular.dev/binaryjack-formular.dev-2.4.0.tgz"
+    "@binaryjack/formular.dev": "file:./binaryjack-formular.dev-2.4.0.tgz"
   }
 }

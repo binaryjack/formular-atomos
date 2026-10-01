@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@atomos/ui": "workspace:*",
-    "@binaryjack/formular.dev": "file:/home/tadeop/dev/Codernic-Workspace/formular.dev/binaryjack-formular.dev-2.4.0.tgz",
+    "@binaryjack/formular.dev": "file:../../binaryjack-formular.dev-2.4.0.tgz",
     "@chakra-ui/react": "^3.36.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",

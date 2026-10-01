@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@binaryjack/formular.dev':
-        specifier: file:/home/tadeop/dev/Codernic-Workspace/formular.dev/binaryjack-formular.dev-2.4.0.tgz
-        version: file:../formular.dev/binaryjack-formular.dev-2.4.0.tgz
+        specifier: file:./binaryjack-formular.dev-2.4.0.tgz
+        version: file:binaryjack-formular.dev-2.4.0.tgz
     devDependencies:
       '@atomos/ui':
         specifier: workspace:*
@@ -166,8 +166,8 @@ importers:
         specifier: workspace:*
         version: link:../atomos-ui-mock
       '@binaryjack/formular.dev':
-        specifier: file:/home/tadeop/dev/Codernic-Workspace/formular.dev/binaryjack-formular.dev-2.4.0.tgz
-        version: file:../formular.dev/binaryjack-formular.dev-2.4.0.tgz
+        specifier: file:../../binaryjack-formular.dev-2.4.0.tgz
+        version: file:binaryjack-formular.dev-2.4.0.tgz
       '@chakra-ui/react':
         specifier: ^3.36.0
         version: 3.36.0(@emotion/react@11.14.0)(react-dom@19.2.4)(react@19.2.4)
@@ -10164,12 +10164,6 @@ packages:
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
-    dev: false
-
-  file:../formular.dev/binaryjack-formular.dev-2.4.0.tgz:
-    resolution: {integrity: sha512-NCltgDiyyQMk7zEgxK49IiLkzRKMpj8ZYm7z2CcgQBcZqfj7yv/orA9Nt+Q1/Ae/IX+mwFYIfqM3yds4lCwpQw==, tarball: file:../formular.dev/binaryjack-formular.dev-2.4.0.tgz}
-    name: '@binaryjack/formular.dev'
-    version: 2.4.0
     dev: false
 
   file:binaryjack-formular.dev-2.4.0.tgz:
