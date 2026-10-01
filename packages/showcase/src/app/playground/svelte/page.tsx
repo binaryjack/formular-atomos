@@ -22,7 +22,6 @@ export default function SveltePlaygroundPage() {
       signUpSchema,
       async (data) => {
         setSubmittedData(data);
-        await new Promise((resolve) => setTimeout(resolve, 800));
       },
       (msg) => console.log(msg),
       (err) => console.error(err)

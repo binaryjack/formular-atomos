@@ -19,7 +19,7 @@ export interface FAAdapterMethods {
   validateAll(): Promise<boolean>
   
   /** Submit form with validation */
-  submit(): Promise<FAField[] | null>
+  submit(): Promise<Record<string, unknown> | null>
   
   /** Get validated data */
   getValidatedData(): Record<string, unknown>
@@ -56,22 +56,25 @@ export class FAAdapter implements FAAdapterMethods {
   private onErrorChange: (name: string, error: string) => void
   
   private formSchema: any | null = null
+  private onSubmitCallback?: (data: any) => void
 
   constructor(
     fields: FAField[],
-    callbacks: {
-      onFieldChange: (name: string, value: unknown) => void
-      onFieldBlur: (name: string) => void
-      onErrorChange: (name: string, error: string) => void
+    callbacks?: {
+      onFieldChange?: (name: string, value: unknown) => void
+      onFieldBlur?: (name: string) => void
+      onErrorChange?: (name: string, error: string) => void
+      onSubmit?: (data: any) => void
     },
     form?: any
   ) {
     this.fields = fields
     this.errors = {}
     this.touched = {}
-    this.onFieldChange = callbacks.onFieldChange
-    this.onFieldBlur = callbacks.onFieldBlur
-    this.onErrorChange = callbacks.onErrorChange
+    this.onFieldChange = callbacks?.onFieldChange || (() => {})
+    this.onFieldBlur = callbacks?.onFieldBlur || (() => {})
+    this.onErrorChange = callbacks?.onErrorChange || (() => {})
+    this.onSubmitCallback = callbacks?.onSubmit
     this.formSchema = form
   }
   
@@ -177,33 +180,39 @@ export class FAAdapter implements FAAdapterMethods {
     }
   }
 
+  updateFields(fields: FAField[]): void {
+    this.fields = fields
+  }
+
   async validateAll(): Promise<boolean> {
     let isValid = true
 
-    // Validate all individual fields to ensure their error states are updated
-    for (const field of this.fields) {
-      const fieldValid = await this.validateField(field.name)
-      if (!fieldValid) {
-        isValid = false
-      }
-    }
-
-    // If individual fields are valid, we can do a final object-level validation 
-    // to catch any cross-field constraints
-    if (isValid && this.formSchema) {
+    if (this.formSchema) {
       const data = this.getValidatedData()
-      console.log('[FAAdapter.validateAll] getValidatedData returned:', data)
       const result = this.formSchema.safeParse(data)
-      console.log('[FAAdapter.validateAll] safeParse result:', result)
       
       if (!result.success) {
         isValid = false
-        const path = result.error.path?.[0]
-        console.log('[FAAdapter.validateAll] Extracted path:', path)
-        if (path) {
-          this.setFieldError(path as string, result.error.message)
-        } else {
-          console.warn('[FAAdapter.validateAll] Validation failed but no path was provided. Error:', result.error)
+        if (result.error.errors && result.error.errors.length > 0) {
+          for (const err of result.error.errors) {
+            const path = err.path?.[0]
+            if (path) {
+              this.setFieldError(path, err.message)
+            }
+          }
+        } else if (result.error.path?.[0]) {
+          this.setFieldError(result.error.path[0], result.error.message)
+        }
+      } else {
+        for (const field of this.fields) {
+          this.clearFieldError(field.name)
+        }
+      }
+    } else {
+      for (const field of this.fields) {
+        const fieldValid = await this.validateField(field.name)
+        if (!fieldValid) {
+          isValid = false
         }
       }
     }
@@ -211,55 +220,38 @@ export class FAAdapter implements FAAdapterMethods {
     return isValid
   }
 
-  async submit(): Promise<FAField[] | null> {
-    console.log('[FAAdapter.submit] Starting submission...')
-    console.log('[FAAdapter.submit] Current fields:', this.fields)
-    console.log('[FAAdapter.submit] Current errors:', this.errors)
-    
+  async submit(): Promise<Record<string, unknown> | null> {
     // Mark all fields as touched upon submission to enforce real-time feedback
     for (const field of this.fields) {
       this.touched[field.name] = true
     }
 
-    // Fallback to basic validation
     const isValid = await this.validateAll()
-    
-    console.log('[FAAdapter.submit] Validation result:', isValid)
-    
     if (!isValid) {
-      console.log('[FAAdapter.submit] Validation failed, returning null')
       return null
     }
 
-    console.log('[FAAdapter.submit] Returning validated fields:', this.fields)
-    return this.fields
+    const data = this.getValidatedData()
+    this.onSubmitCallback?.(data)
+    return data
   }
 
   getValidatedData(): Record<string, unknown> {
-    // TODO: Use FormularAgent when available
-    // if (this.formularAgent) {
-    //   return this.formularAgent.getData()
-    // }
-    
-    // Fallback
     const data: Record<string, unknown> = {}
-    
     for (const field of this.fields) {
       data[field.name] = field.value
     }
-
     return data
   }
 
   reset(): void {
-    // TODO: Use FormularAgent when available
-    // if (this.formularAgent) {
-    //   this.formularAgent.reset()
-    // }
-    
-    // Fallback
     this.errors = {}
     this.touched = {}
+    for (const field of this.fields) {
+      field.value = ''
+      field.touched = false
+      this.clearFieldError(field.name)
+    }
   }
 
   handleChange(fieldName: string, value: unknown): void {

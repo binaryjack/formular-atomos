@@ -53,27 +53,31 @@ export interface FormProviderProps {
 }
 
 export const FormProvider = ({ initialFields, handleChange: externalHandleChange, handleBlur: externalHandleBlur, children }: FormProviderProps) => {
-  const [fields, setFields] = React.useState<FormField[]>(initialFields)
-  const [errors] = React.useState<Record<string, string>>({})
+  const errors = React.useMemo(() => {
+    const errs: Record<string, string> = {}
+    initialFields.forEach(field => {
+      const error = field.validation?.error
+      if (typeof error === 'string' && error) {
+        errs[field.name] = error
+      }
+    })
+    return errs
+  }, [initialFields])
 
   const handleChange = (name: string, value: unknown) => {
     if (externalHandleChange) {
       externalHandleChange(name, value)
-    } else {
-      setFields(prev => prev.map(f => f.name === name ? { ...f, value } : f))
     }
   }
 
   const handleBlur = (name: string) => {
     if (externalHandleBlur) {
       externalHandleBlur(name)
-    } else {
-      setFields(prev => prev.map(f => f.name === name ? { ...f, touched: true } : f))
     }
   }
 
   const value: FormContextValue = {
-    fields,
+    fields: initialFields,
     errors,
     handleChange,
     handleBlur

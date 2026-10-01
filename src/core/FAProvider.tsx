@@ -8,6 +8,19 @@ import { FormProvider as AtomosFormProvider, FormField } from '@atomos/ui'
 import React, { useMemo } from 'react'
 import { FAAdapter } from './FAAdapter'
 
+export interface FAContextValue {
+  adapter: FAAdapter
+  fields: FAField[]
+  errors: Record<string, string>
+  handleChange: (name: string, value: unknown) => void
+  handleBlur: (name: string) => Promise<void>
+  submit: () => Promise<Record<string, unknown> | null>
+  reset: () => void
+  isValid: boolean
+}
+
+export const FAContext = React.createContext<FAContextValue | null>(null)
+
 export interface FAProviderProps extends Partial<Omit<FAProviderConfig, 'onSubmit' | 'formName'>> {
   children: React.ReactNode
   formName?: string
@@ -87,6 +100,11 @@ export const FAProvider = ({
     [derivedFields, onFieldChange, onFieldBlur, onErrorChange, form]
   )
 
+  // Ensure adapter always tracks latest field values
+  React.useEffect(() => {
+    adapter.updateFields(fields)
+  }, [adapter, fields])
+
   // Wire up adapter to handle changes and validation
   const handleChange = React.useCallback((name: string, value: unknown) => {
     adapter.handleChange(name, value)
@@ -95,6 +113,23 @@ export const FAProvider = ({
   const handleBlur = React.useCallback(async (name: string) => {
     await adapter.handleBlur(name)
   }, [adapter])
+
+  const handleReset = React.useCallback(() => {
+    adapter.reset()
+    setFields(derivedFields)
+    setErrors({})
+  }, [adapter, derivedFields])
+
+  const contextValue: FAContextValue = useMemo(() => ({
+    adapter,
+    fields,
+    errors,
+    handleChange,
+    handleBlur,
+    submit: () => adapter.submit(),
+    reset: handleReset,
+    isValid: Object.keys(errors).length === 0
+  }), [adapter, fields, errors, handleChange, handleBlur, handleReset])
 
   // Convert FA fields to Atomos format
   const atomosFields: FormField[] = useMemo(
@@ -144,20 +179,22 @@ export const FAProvider = ({
   }
 
   return (
-    <AtomosFormProvider
-      initialFields={atomosFields}
-      onSubmit={handleAtomosSubmit}
-      onSuccess={onSuccess}
-      onError={onError}
-      submitLabel={submitLabel}
-      showReset={showReset}
-      resetLabel={resetLabel}
-      handleChange={handleChange}
-      handleBlur={handleBlur}
-    >
-      <form onSubmit={handleFormSubmit} name={formName}>
-        {children}
-      </form>
-    </AtomosFormProvider>
+    <FAContext.Provider value={contextValue}>
+      <AtomosFormProvider
+        initialFields={atomosFields}
+        onSubmit={handleAtomosSubmit}
+        onSuccess={onSuccess}
+        onError={onError}
+        submitLabel={submitLabel}
+        showReset={showReset}
+        resetLabel={resetLabel}
+        handleChange={handleChange}
+        handleBlur={handleBlur}
+      >
+        <form onSubmit={handleFormSubmit} name={formName}>
+          {children}
+        </form>
+      </AtomosFormProvider>
+    </FAContext.Provider>
   )
 }

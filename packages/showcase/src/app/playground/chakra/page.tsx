@@ -21,7 +21,6 @@ export default function ChakraPlaygroundPage() {
 
   const handleSubmit = async (data: any) => {
     setSubmittedData(data);
-    await new Promise((resolve) => setTimeout(resolve, 800));
   };
 
   return (
