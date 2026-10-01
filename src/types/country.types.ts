@@ -37,7 +37,7 @@ export const COUNTRIES: Record<CountryCode, CountryMetadata> = {
     code: 'US',
     name: 'United States',
     phonePrefix: '+1',
-    phoneFormat: '+1 (555) 123-4567',
+    phoneFormat: '555-123-4567',
     postalFormat: '12345 or 12345-6789',
     supportsPhone: true,
     supportsPostal: true
@@ -47,7 +47,7 @@ export const COUNTRIES: Record<CountryCode, CountryMetadata> = {
     name: 'Canada',
     phonePrefix: '+1',
     phoneFormat: '+1 (416) 555-0123',
-    postalFormat: 'K1A 0A6',
+    postalFormat: 'K1A 0B1',
     supportsPhone: true,
     supportsPostal: true
   },
@@ -55,7 +55,7 @@ export const COUNTRIES: Record<CountryCode, CountryMetadata> = {
     code: 'UK',
     name: 'United Kingdom',
     phonePrefix: '+44',
-    phoneFormat: '+44 20 7946 0958',
+    phoneFormat: '+44 20 1234 5678',
     postalFormat: 'SW1A 1AA',
     supportsPhone: true,
     supportsPostal: true

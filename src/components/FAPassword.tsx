@@ -57,6 +57,7 @@ export const FAPassword = forwardRef<HTMLInputElement, FAPasswordProps>(
           <FormInput
             ref={ref}
             id={id}
+            aria-label={field.label}
             type={isVisible ? 'text' : 'password'}
             placeholder={placeholder}
             helpText={helpText}

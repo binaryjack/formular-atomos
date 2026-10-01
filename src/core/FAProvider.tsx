@@ -44,10 +44,21 @@ export const FAProvider = ({
   children
 }: FAProviderProps) => {
   const derivedFields = React.useMemo(() => {
-    if (initialFields.length > 0) return initialFields
+    if (initialFields.length > 0) {
+      return initialFields.map((f, i) => {
+        const name = f.name || f.id || `field_${i}`
+        const id = f.id || f.name || `field_${i}`
+        return {
+          ...f,
+          name,
+          id,
+          value: f.value ?? (f as any).defaultValue ?? '',
+        }
+      })
+    }
     if (form && form.shape) {
       return Object.keys(form.shape).map((key, i) => ({
-        id: i,
+        id: key,
         name: key,
         label: key,
         type: 'text',
@@ -72,13 +83,13 @@ export const FAProvider = ({
   // Stable callbacks for adapter
   const onFieldChange = React.useCallback((name: string, value: unknown) => {
     setFields((prev) =>
-      prev.map((f) => (f.name === name ? { ...f, value } : f))
+      prev.map((f) => (f.name === name || f.id === name ? { ...f, value } : f))
     )
   }, [])
 
   const onFieldBlur = React.useCallback((name: string) => {
     setFields((prev) =>
-      prev.map((f) => (f.name === name ? { ...f, touched: true } : f))
+      prev.map((f) => (f.name === name || f.id === name ? { ...f, touched: true } : f))
     )
   }, [])
 
@@ -135,7 +146,8 @@ export const FAProvider = ({
   const atomosFields: FormField[] = useMemo(
     () =>
       fields.map((field) => ({
-        name: field.name,
+        id: field.id || field.name || '',
+        name: field.name || field.id || '',
         value: field.value ?? '',
         label: field.label,
         validation: {
@@ -146,9 +158,9 @@ export const FAProvider = ({
           max: field.validation?.max ?? null,
           pattern: field.validation?.pattern ?? null,
           guide: field.validation?.guide ?? undefined,
-          error: errors[field.name] || ''
+          error: errors[field.name] || errors[field.id || ''] || ''
         },
-        isValid: !errors[field.name],
+        isValid: !errors[field.name] && !errors[field.id || ''],
         touched: field.touched
       })),
     [fields, errors]

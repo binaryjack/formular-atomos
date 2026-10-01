@@ -48,6 +48,7 @@ export const FAInput = forwardRef<HTMLInputElement, FAInputProps>(
             disabled={disabled}
             maxLength={maxLength}
             testId={testId}
+            className={className}
           />
         </div>
         <FASetValidationResult 

@@ -13,13 +13,13 @@ import { FAField } from '@/types/field.types'
 
 export interface FAAdapterMethods {
   /** Validate a single field */
-  validateField(fieldName: string): Promise<boolean>
+  validateField(fieldName: string, value?: unknown): any
   
   /** Validate all fields */
-  validateAll(): Promise<boolean>
+  validateAll(values?: Record<string, unknown>): any
   
   /** Submit form with validation */
-  submit(): Promise<Record<string, unknown> | null>
+  submit(values?: Record<string, unknown>): any
   
   /** Get validated data */
   getValidatedData(): Record<string, unknown>
@@ -68,7 +68,11 @@ export class FAAdapter implements FAAdapterMethods {
     },
     form?: any
   ) {
-    this.fields = fields
+    this.fields = (fields || []).map((f, i) => ({
+      ...f,
+      id: f.id ?? f.name ?? String(i),
+      name: f.name ?? f.id ?? `field_${i}`,
+    }))
     this.errors = {}
     this.touched = {}
     this.onFieldChange = callbacks?.onFieldChange || (() => {})
@@ -148,43 +152,72 @@ export class FAAdapter implements FAAdapterMethods {
     this.onFieldBlur(name)
   }
 
-  async validateField(fieldName: string): Promise<boolean> {
-    const field = this.fields.find((f) => f.name === fieldName)
-    if (!field) return false
+  validateField(fieldName: string, valueOverride?: unknown): any {
+    const field = this.fields.find((f) => f.name === fieldName || f.id === fieldName)
+    if (!field) {
+      if (valueOverride !== undefined) return null
+      return false
+    }
 
-    const value = field.value
+    const value = valueOverride !== undefined ? valueOverride : field.value
 
-    // Use formular.dev engine natively
-    if (this.formSchema && this.formSchema.shape && this.formSchema.shape[fieldName]) {
-      const fieldSchema = this.formSchema.shape[fieldName]
+    // Use formular.dev engine natively if schema is attached
+    if (this.formSchema && this.formSchema.shape && (this.formSchema.shape[fieldName] || this.formSchema.shape[field.name])) {
+      const fieldSchema = this.formSchema.shape[fieldName] || this.formSchema.shape[field.name]
       const result = fieldSchema.safeParse(value)
       
       if (!result.success) {
-        this.setFieldError(fieldName, result.error.message)
+        if (valueOverride !== undefined) {
+          return result.error.message
+        }
+        this.setFieldError(field.name, result.error.message)
         return false
       } else {
-        this.clearFieldError(fieldName)
+        if (valueOverride !== undefined) {
+          return null
+        }
+        this.clearFieldError(field.name)
         return true
       }
     }
 
-    // Fallback if no schema is provided
+    // Fallback rule validation
     const error = this.runValidation(field, value)
     
+    if (valueOverride !== undefined) {
+      return error
+    }
+
     if (error) {
-      this.setFieldError(fieldName, error)
+      this.setFieldError(field.name, error)
       return false
     } else {
-      this.clearFieldError(fieldName)
+      this.clearFieldError(field.name)
       return true
     }
   }
 
   updateFields(fields: FAField[]): void {
-    this.fields = fields
+    this.fields = (fields || []).map((f, i) => ({
+      ...f,
+      id: f.id ?? f.name ?? String(i),
+      name: f.name ?? f.id ?? `field_${i}`,
+    }))
   }
 
-  async validateAll(): Promise<boolean> {
+  validateAll(valuesOverride?: Record<string, unknown>): any {
+    if (valuesOverride !== undefined) {
+      const errors: Record<string, string> = {}
+      for (const field of this.fields) {
+        const val = valuesOverride[field.name] !== undefined ? valuesOverride[field.name] : valuesOverride[field.id || '']
+        const error = this.runValidation(field, val)
+        if (error) {
+          errors[field.name] = error
+        }
+      }
+      return errors
+    }
+
     let isValid = true
 
     if (this.formSchema) {
@@ -210,7 +243,7 @@ export class FAAdapter implements FAAdapterMethods {
       }
     } else {
       for (const field of this.fields) {
-        const fieldValid = await this.validateField(field.name)
+        const fieldValid = this.validateField(field.name)
         if (!fieldValid) {
           isValid = false
         }
@@ -220,13 +253,23 @@ export class FAAdapter implements FAAdapterMethods {
     return isValid
   }
 
-  async submit(): Promise<Record<string, unknown> | null> {
+  submit(valuesOverride?: Record<string, unknown>): any {
+    if (valuesOverride !== undefined) {
+      const errors = this.validateAll(valuesOverride)
+      const isValid = Object.keys(errors).length === 0
+      if (!isValid) {
+        return false
+      }
+      this.onSubmitCallback?.(valuesOverride)
+      return true
+    }
+
     // Mark all fields as touched upon submission to enforce real-time feedback
     for (const field of this.fields) {
       this.touched[field.name] = true
     }
 
-    const isValid = await this.validateAll()
+    const isValid = this.validateAll()
     if (!isValid) {
       return null
     }
@@ -315,21 +358,20 @@ export class FAAdapter implements FAAdapterMethods {
   }
 
   private runValidation(field: FAField, value: unknown): string | null {
-    const validation = field.validation
-
-    if (!validation) return null
+    const validation = field.validation || {}
+    const formularRules = (validation.formular as Record<string, any>) || {}
 
     // Helper to extract value and message from validation rule
     const getRule = <T>(rule: T | { value: T; message: string } | undefined): { value: T | undefined; message?: string } => {
-      if (!rule) return { value: undefined }
-      if (typeof rule === 'object' && rule !== null && 'value' in rule) {
-        return { value: rule.value as T, message: rule.message as string }
+      if (rule === undefined || rule === null) return { value: undefined }
+      if (typeof rule === 'object' && 'value' in rule) {
+        return { value: (rule as any).value as T, message: (rule as any).message as string }
       }
       return { value: rule as T }
     }
 
-    // Required validation
-    const requiredRule = getRule(validation.required)
+    // 1. Required validation
+    const requiredRule = getRule(validation.required ?? field.required)
     if (requiredRule.value) {
       if (value === null || value === undefined || value === '' || (Array.isArray(value) && value.length === 0)) {
         return requiredRule.message || `${field.label} is required`
@@ -337,76 +379,127 @@ export class FAAdapter implements FAAdapterMethods {
     }
 
     // Skip other validations if empty and not required
-    if (!value && !requiredRule.value) {
+    if ((value === null || value === undefined || value === '') && !requiredRule.value) {
       return null
     }
 
-    // Email validation
-    if (validation.email) {
-      const emailRule = getRule(validation.email)
-      if (emailRule.value && typeof value === 'string') {
+    const strVal = value !== null && value !== undefined ? String(value) : ''
+
+    // 2. Email validation
+    const hasEmail = validation.email || formularRules.email || field.type === 'email'
+    if (hasEmail) {
+      const emailRule = getRule(validation.email ?? formularRules.email)
+      if (emailRule.value !== false) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        if (!emailRegex.test(value)) {
+        if (!emailRegex.test(strVal)) {
           return emailRule.message || `${field.label} must be a valid email address`
         }
       }
     }
 
-    // String validations
-    if (typeof value === 'string') {
-      const minLengthRule = getRule(validation.minLength)
-      if (minLengthRule.value && value.length < minLengthRule.value) {
-        return minLengthRule.message || `${field.label} must be at least ${minLengthRule.value} characters`
+    // 3. String minLength / maxLength
+    const minLengthVal = validation.minLength ?? formularRules.minLength
+    if (minLengthVal !== undefined) {
+      const minRule = getRule(minLengthVal)
+      if (minRule.value !== undefined && strVal.length < minRule.value) {
+        return minRule.message || `${field.label} must be at least ${minRule.value} characters`
+      }
+    }
+
+    const maxLengthVal = validation.maxLength ?? formularRules.maxLength
+    if (maxLengthVal !== undefined) {
+      const maxRule = getRule(maxLengthVal)
+      if (maxRule.value !== undefined && strVal.length > maxRule.value) {
+        return maxRule.message || `${field.label} must be at most ${maxRule.value} characters`
+      }
+    }
+
+    // 4. Number min / max validation
+    const minNum = validation.min ?? formularRules.min
+    const maxNum = validation.max ?? formularRules.max
+    if (minNum !== undefined || maxNum !== undefined || field.type === 'number') {
+      const num = typeof value === 'number' ? value : parseFloat(strVal)
+      if (!isNaN(num)) {
+        if (minNum !== undefined) {
+          const minRule = getRule(minNum)
+          if (minRule.value !== undefined && num < minRule.value) {
+            return minRule.message || `${field.label} must be at least ${minRule.value}`
+          }
+        }
+        if (maxNum !== undefined) {
+          const maxRule = getRule(maxNum)
+          if (maxRule.value !== undefined && num > maxRule.value) {
+            return maxRule.message || `${field.label} must be at most ${maxRule.value}`
+          }
+        }
+      }
+    }
+
+    // 5. Password Strength Validation
+    const strength = (field as any).strength || formularRules.strength
+    if (strength || field.type === 'password') {
+      if (strength === 'medium' && strVal.length < 8) {
+        return `${field.label} must be at least 8 characters`
+      }
+      if (strength === 'strong' && strVal.length < 12) {
+        return `${field.label} must be at least 12 characters`
+      }
+    }
+
+    // 6. Phone validation
+    const isPhone = (field.type as string) === 'phone' || field.type === 'tel' || Boolean(formularRules.phone)
+    if (isPhone) {
+      const country = (field as any).country || (typeof formularRules.phone === 'string' ? formularRules.phone : 'US')
+      if (country === 'US') {
+        const usPhoneRegex = /^(\+?1[-.\s]?)?(\(?\d{3}\)?[-.\s]?)?\d{3}[-.\s]?\d{4}$/
+        if (!usPhoneRegex.test(strVal)) {
+          return `${field.label} must be a valid US phone number`
+        }
+      } else if (country === 'UK') {
+        const ukPhoneRegex = /^(\+?44[-.\s]?)?(\(?\d{2,4}\)?[-.\s]?)?\d{3,4}[-.\s]?\d{4}$/
+        if (!ukPhoneRegex.test(strVal)) {
+          return `${field.label} must be a valid UK phone number`
+        }
+      }
+    }
+
+    // 7. Postal Code validation
+    const isPostal = field.type === 'postal' || Boolean(formularRules.postalCode)
+    if (isPostal) {
+      const country = (field as any).country || (typeof formularRules.postalCode === 'string' ? formularRules.postalCode : 'US')
+      if (country === 'US') {
+        const usZipRegex = /^\d{5}(-\d{4})?$/
+        if (!usZipRegex.test(strVal)) {
+          return `${field.label} must be a valid US postal code`
+        }
+      } else if (country === 'CA') {
+        const caZipRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/
+        if (!caZipRegex.test(strVal)) {
+          return `${field.label} must be a valid CA postal code`
+        }
+      }
+    }
+
+    // 8. Regex pattern
+    if (validation.pattern) {
+      let patternValue: string | RegExp | undefined
+      let patternMessage: string | undefined
+      
+      if (validation.pattern instanceof RegExp) {
+        patternValue = validation.pattern
+      } else if (typeof validation.pattern === 'object' && 'value' in validation.pattern) {
+        patternValue = validation.pattern.value
+        patternMessage = validation.pattern.message
       }
 
-      const maxLengthRule = getRule(validation.maxLength)
-      if (maxLengthRule.value && value.length > maxLengthRule.value) {
-        return maxLengthRule.message || `${field.label} must be no more than ${maxLengthRule.value} characters`
-      }
-
-      if (validation.pattern) {
-        let patternValue: string | RegExp | undefined
-        let patternMessage: string | undefined
-        
-        if (validation.pattern instanceof RegExp) {
-          patternValue = validation.pattern
-        } else if (typeof validation.pattern === 'object' && 'value' in validation.pattern) {
-          patternValue = validation.pattern.value
-          patternMessage = validation.pattern.message
-        } else {
-          return null
-        }
-
-        let regex: RegExp
-        if (typeof patternValue === 'string') {
-          regex = new RegExp(patternValue)
-        } else if (patternValue instanceof RegExp) {
-          regex = patternValue
-        } else {
-          return null
-        }
-        
-        if (!regex.test(value)) {
+      if (patternValue) {
+        const regex = patternValue instanceof RegExp ? patternValue : new RegExp(patternValue)
+        if (!regex.test(strVal)) {
           return patternMessage || validation.error || `${field.label} format is invalid`
         }
       }
     }
 
-    // Number validations
-    if (typeof value === 'number') {
-      const minRule = getRule(validation.min)
-      if (minRule.value !== undefined && value < minRule.value) {
-        return minRule.message || `${field.label} must be at least ${minRule.value}`
-      }
-
-      const maxRule = getRule(validation.max)
-      if (maxRule.value !== undefined && value > maxRule.value) {
-        return maxRule.message || `${field.label} must be no more than ${maxRule.value}`
-      }
-    }
-
-    // Formular validators would be integrated here
-    // For now, returning null as placeholder
     return null
   }
 }

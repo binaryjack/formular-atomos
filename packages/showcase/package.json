@@ -17,7 +17,7 @@
     "@formular/atomos": "workspace:*",
     "@mui/material": "^9.1.2",
     "antd": "^6.5.0",
-    "formular.dev": "file:/home/tadeop/dev/Codernic-Workspace/formular.dev/binaryjack-formular.dev-2.4.0.tgz",
+    "formular.dev": "file:../../binaryjack-formular.dev-2.4.0.tgz",
     "framer-motion": "^12.42.2",
     "lucide-react": "^1.22.0",
     "next": "16.2.7",

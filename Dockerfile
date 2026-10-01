@@ -5,8 +5,9 @@ RUN corepack enable pnpm
 
 WORKDIR /app
 
-# Copy monorepo configuration
+# Copy monorepo configuration and tarballs
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.json vite.config.ts .npmrc* ./
+COPY binaryjack-formular.dev-2.4.0.tgz ./
 
 # Copy source code and packages
 COPY src ./src

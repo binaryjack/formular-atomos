@@ -83,7 +83,7 @@
     "eslint": "^8.57.1",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^4.6.2",
-    "formular.dev": "file:/home/tadeop/dev/Codernic-Workspace/formular.dev/binaryjack-formular.dev-2.4.0.tgz",
+    "formular.dev": "file:./binaryjack-formular.dev-2.4.0.tgz",
     "happy-dom": "^12.10.3",
     "postcss": "^8.5.15",
     "react": "^18.3.1",

@@ -64,8 +64,8 @@ importers:
         specifier: ^4.6.2
         version: 4.6.2(eslint@8.57.1)
       formular.dev:
-        specifier: file:/home/tadeop/dev/Codernic-Workspace/formular.dev/binaryjack-formular.dev-2.4.0.tgz
-        version: file:../formular.dev/binaryjack-formular.dev-2.4.0.tgz
+        specifier: file:./binaryjack-formular.dev-2.4.0.tgz
+        version: file:binaryjack-formular.dev-2.4.0.tgz
       happy-dom:
         specifier: ^12.10.3
         version: 12.10.3
@@ -187,8 +187,8 @@ importers:
         specifier: ^6.5.0
         version: 6.5.0(react-dom@19.2.4)(react@19.2.4)
       formular.dev:
-        specifier: file:/home/tadeop/dev/Codernic-Workspace/formular.dev/binaryjack-formular.dev-2.4.0.tgz
-        version: file:../formular.dev/binaryjack-formular.dev-2.4.0.tgz
+        specifier: file:../../binaryjack-formular.dev-2.4.0.tgz
+        version: file:binaryjack-formular.dev-2.4.0.tgz
       framer-motion:
         specifier: ^12.42.2
         version: 12.42.2(react-dom@19.2.4)(react@19.2.4)
@@ -10168,5 +10168,11 @@ packages:
 
   file:../formular.dev/binaryjack-formular.dev-2.4.0.tgz:
     resolution: {integrity: sha512-NCltgDiyyQMk7zEgxK49IiLkzRKMpj8ZYm7z2CcgQBcZqfj7yv/orA9Nt+Q1/Ae/IX+mwFYIfqM3yds4lCwpQw==, tarball: file:../formular.dev/binaryjack-formular.dev-2.4.0.tgz}
+    name: '@binaryjack/formular.dev'
+    version: 2.4.0
+    dev: false
+
+  file:binaryjack-formular.dev-2.4.0.tgz:
+    resolution: {integrity: sha512-NCltgDiyyQMk7zEgxK49IiLkzRKMpj8ZYm7z2CcgQBcZqfj7yv/orA9Nt+Q1/Ae/IX+mwFYIfqM3yds4lCwpQw==, tarball: file:binaryjack-formular.dev-2.4.0.tgz}
     name: '@binaryjack/formular.dev'
     version: 2.4.0

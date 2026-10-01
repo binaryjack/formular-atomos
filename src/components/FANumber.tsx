@@ -14,9 +14,9 @@ export const FANumber = forwardRef<HTMLInputElement, FANumberProps>(
       placeholder,
       helpText,
       disabled = false,
-      min: _min,
-      max: _max,
-      step: _step,
+      min,
+      max,
+      step,
       testId
     },
     ref
@@ -29,6 +29,9 @@ export const FANumber = forwardRef<HTMLInputElement, FANumberProps>(
         placeholder={placeholder}
         helpText={helpText}
         disabled={disabled}
+        min={min}
+        max={max}
+        step={step}
         testId={testId}
         className={className}
       />

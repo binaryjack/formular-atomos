@@ -87,25 +87,29 @@ export const FormProvider = ({ initialFields, handleChange: externalHandleChange
 }
 
 // Mock form components
-export const FormInput = forwardRef<HTMLInputElement, React.ComponentPropsWithRef<'input'>>((props, ref) => {
-  const { id, type = 'text', ...restProps } = props
+export const FormInput = forwardRef<HTMLInputElement, React.ComponentPropsWithRef<'input'> & { helpText?: string; testId?: string }>((props, ref) => {
+  const { id, type = 'text', helpText, testId, className, ...restProps } = props
   const { fields, errors, handleChange, handleBlur } = useFormContext()
   
-  const field = fields.find(f => f.name === id)
+  const field = fields.find(f => f.name === id || (f as any).id === id)
   const value = field?.value ?? ''
   const error = id ? errors[id] : undefined
   
   return (
-    <input
-      ref={ref}
-      id={id}
-      type={type}
-      value={value as string}
-      onChange={(e) => id && handleChange(id, e.target.value)}
-      onBlur={() => id && handleBlur(id)}
-      {...restProps}
-      className={`w-full border rounded px-3 py-2 ${error ? 'border-red-500' : 'border-gray-600'} bg-gray-700 text-white ${props.className || ''}`}
-    />
+    <div className="w-full">
+      <input
+        ref={ref}
+        id={id}
+        data-testid={testId}
+        type={type}
+        value={value as string}
+        onChange={(e) => id && handleChange(id, e.target.value)}
+        onBlur={() => id && handleBlur(id)}
+        {...restProps}
+        className={`w-full border rounded px-3 py-2 ${error ? 'border-red-500' : 'border-gray-600'} bg-gray-700 text-white ${className || ''}`}
+      />
+      {helpText && <div className="text-sm text-gray-400 mt-1">{helpText}</div>}
+    </div>
   )
 })
 FormInput.displayName = 'FormInput'
@@ -114,7 +118,7 @@ export const FormTextarea = forwardRef<HTMLTextAreaElement, React.ComponentProps
   const { id, ...restProps } = props
   const { fields, errors, handleChange, handleBlur } = useFormContext()
   
-  const field = fields.find(f => f.name === id)
+  const field = fields.find(f => f.name === id || (f as any).id === id)
   const value = field?.value ?? ''
   const error = id ? errors[id] : undefined
   
@@ -136,7 +140,7 @@ export const FormCheckbox = forwardRef<HTMLInputElement, React.ComponentPropsWit
   const { id, label, ...restProps } = props
   const { fields, handleChange, handleBlur } = useFormContext()
   
-  const field = fields.find(f => f.name === id)
+  const field = fields.find(f => f.name === id || (f as any).id === id)
   const checked = Boolean(field?.value)
   
   return (
@@ -161,7 +165,7 @@ export const FormSelect = forwardRef<HTMLSelectElement, React.ComponentPropsWith
   const { id, children, ...restProps } = props
   const { fields, errors, handleChange, handleBlur } = useFormContext()
   
-  const field = fields.find(f => f.name === id)
+  const field = fields.find(f => f.name === id || (f as any).id === id)
   const value = field?.value ?? ''
   const error = id ? errors[id] : undefined
   
@@ -239,7 +243,7 @@ export const Toggle = forwardRef<HTMLInputElement, ToggleProps>((props, ref) => 
   const { id, label, labelPosition = 'right', ...rest } = props
   const { fields, handleChange, handleBlur } = useFormContext()
   
-  const field = fields.find(f => f.name === id)
+  const field = fields.find(f => f.name === id || (f as any).id === id)
   const checked = Boolean(field?.value)
   
   return (
