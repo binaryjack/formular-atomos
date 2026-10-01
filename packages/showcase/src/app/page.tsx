@@ -62,17 +62,29 @@ export default function Home() {
           </Link>
         </div>
 
-        {/* One-Click Install Pill */}
-        <div
-          onClick={handleCopyInstall}
-          className="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-lg border border-white/[0.03] bg-[#0c0e14]/80 text-xs font-mono text-neutral-400 hover:border-indigo-500/30 hover:text-neutral-200 transition-all cursor-pointer shadow-sm group"
-          title="Click to copy"
-        >
-          <span className="text-indigo-400">$</span>
-          <span>pnpm add formular.dev</span>
-          <span className="text-[10px] text-neutral-400 group-hover:text-indigo-400 transition-colors">
-            {copiedInstall ? '✓ Copied' : 'Copy'}
-          </span>
+        {/* Installation & Download Actions */}
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <div
+            onClick={handleCopyInstall}
+            className="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-lg border border-white/[0.03] bg-[#0c0e14]/80 text-xs font-mono text-neutral-400 hover:border-indigo-500/30 hover:text-neutral-200 transition-all cursor-pointer shadow-sm group"
+            title="Click to copy"
+          >
+            <span className="text-indigo-400">$</span>
+            <span>pnpm add @binaryjack/formular.dev</span>
+            <span className="text-[10px] text-neutral-400 group-hover:text-indigo-400 transition-colors">
+              {copiedInstall ? '✓ Copied' : 'Copy'}
+            </span>
+          </div>
+
+          <a
+            href="/downloads/formular.dev-latest.tgz"
+            download
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg border border-indigo-500/20 bg-indigo-950/20 text-xs font-mono text-indigo-300 hover:bg-indigo-900/30 hover:border-indigo-500/40 transition-all shadow-sm"
+          >
+            <span>📦</span>
+            <span>Download .tgz (v2.4.0)</span>
+            <span className="text-[10px] px-1 py-0.2 rounded bg-indigo-500/20 text-indigo-200 font-mono">638 KB</span>
+          </a>
         </div>
       </section>
 

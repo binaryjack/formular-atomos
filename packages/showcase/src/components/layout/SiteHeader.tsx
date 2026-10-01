@@ -34,8 +34,8 @@ export function SiteHeader() {
               DEV
             </span>
           </div>
-          <span className="hidden sm:inline-block text-[10px] font-mono px-1.5 py-0.5 rounded border border-white/[0.03] bg-white/[0.02] text-neutral-400 ml-1">
-            v2.1
+          <span className="hidden sm:inline-block text-[10px] font-mono px-1.5 py-0.5 rounded border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 ml-1">
+            v2.4.0
           </span>
         </Link>
 

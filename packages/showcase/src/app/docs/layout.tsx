@@ -22,10 +22,41 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
               </li>
             </ul>
           </div>
+
+          <div className="pt-4 border-t border-white/[0.03]">
+            <h4 className="font-mono text-xs tracking-wider text-neutral-400 uppercase mb-3">Advanced Validations</h4>
+            <ul className="space-y-1.5 text-xs">
+              <li>
+                <Link href="/docs/validation-recipes" className="text-neutral-300 hover:text-white transition-colors block py-1">
+                  Recipes & Schema Patterns
+                </Link>
+              </li>
+              <li>
+                <Link href="/docs/country-rules" className="text-neutral-300 hover:text-white transition-colors block py-1">
+                  Country Rules (AHV, IBAN)
+                </Link>
+              </li>
+              <li>
+                <Link href="/docs/async-validation" className="text-neutral-300 hover:text-white transition-colors block py-1">
+                  Async & Debounce
+                </Link>
+              </li>
+            </ul>
+          </div>
           
           <div className="pt-4 border-t border-white/[0.03]">
-            <h4 className="font-mono text-xs tracking-wider text-neutral-400 uppercase mb-3">Integration Paths</h4>
+            <h4 className="font-mono text-xs tracking-wider text-neutral-400 uppercase mb-3">Architecture & Patterns</h4>
             <ul className="space-y-1.5 text-xs">
+              <li>
+                <Link href="/docs/component-augmentation" className="text-neutral-300 hover:text-white transition-colors block py-1">
+                  Component Augmentation
+                </Link>
+              </li>
+              <li>
+                <Link href="/docs/multi-step-wizards" className="text-neutral-300 hover:text-white transition-colors block py-1">
+                  Multi-Step Wizards
+                </Link>
+              </li>
               <li>
                 <Link href="/docs/ready-adapters" className="text-neutral-300 hover:text-white transition-colors block py-1">
                   Path 1: Ready Adapters
