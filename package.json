@@ -1,6 +1,6 @@
 {
   "name": "@formular/atomos",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React form components bridging Atomos UI and Formular.dev validation",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -20,10 +20,6 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "demo": "cd demo && pnpm dev",
-    "demo:build": "cd demo && pnpm build",
-    "demo:start": "cd demo && pnpm start",
-    "deploy:showcase": "cd packages/showcase && pnpm build && cd ../.. && rm -rf docs && mv packages/showcase/out docs && echo > docs/.nojekyll",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
@@ -52,10 +48,8 @@
     "url": "https://github.com/binaryjack/formular-atomos.git"
   },
   "peerDependencies": {
-    "@atomos/ui": "workspace:*",
-    "formular.dev": "workspace:*",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   },
   "peerDependenciesMeta": {
     "@atomos/ui": {
@@ -95,6 +89,6 @@
     "vitest": "^1.6.1"
   },
   "dependencies": {
-    "@binaryjack/formular.dev": "file:./binaryjack-formular.dev-2.4.0.tgz"
+    "@binaryjack/formular.dev": "^2.4.0"
   }
 }
