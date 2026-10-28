@@ -55,4 +55,4 @@ next-env.d.ts
 storybook-static/
 
 # Package managers
-pnpm-debug.log*
+pnpm-debug.log*target/
